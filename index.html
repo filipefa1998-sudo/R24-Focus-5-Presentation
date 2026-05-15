@@ -3,1581 +3,506 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Focus Five Tracker — Riverton 24th Tongan Ward</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Focus Five — Focus on the One</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --navy: #0a0e27;
-    --deep: #0d1340;
-    --ink: #111827;
-    --gold: #f0a500;
-    --gold2: #fbbf24;
-    --sky: #38bdf8;
-    --emerald: #10b981;
-    --violet: #8b5cf6;
-    --rose: #f43f5e;
-    --cream: #fef9ef;
-    --slate: #94a3b8;
-    --white: #ffffff;
-  }
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a0c1a;font-family:'Nunito',sans-serif;color:white;}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── SLIDE ENGINE ── */
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0s;overflow:hidden;}
+.slide.active{opacity:1;pointer-events:all;}
+.slide.entering{animation:slideIn 0.55s cubic-bezier(0.16,1,0.3,1) forwards;}
+.slide.leaving{animation:slideOut 0.4s ease-in forwards;}
+@keyframes slideIn{from{opacity:0;transform:translateY(24px) scale(0.985);}to{opacity:1;transform:none;}}
+@keyframes slideOut{from{opacity:1;transform:none;}to{opacity:0;transform:translateY(-16px) scale(0.98);}}
 
-  html { scroll-behavior: smooth; }
+/* ── NAV ── */
+#dots{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:200;}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.22);transition:all 0.3s;cursor:pointer;}
+.dot.active{background:white;transform:scale(1.4);}
+#arrow-left,#arrow-right{position:fixed;top:50%;transform:translateY(-50%);z-index:200;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45);width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;transition:all 0.2s;user-select:none;}
+#arrow-left{left:12px;}#arrow-right{right:12px;}
+#arrow-left:hover,#arrow-right:hover{background:rgba(255,255,255,0.13);color:white;}
+#counter{position:fixed;top:16px;right:18px;font-family:'DM Mono',monospace;font-size:0.68rem;color:rgba(255,255,255,0.28);z-index:200;letter-spacing:1px;}
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--navy);
-    color: var(--white);
-    overflow-x: hidden;
-  }
+/* ── STAGGER ── */
+.s1,.s2,.s3,.s4,.s5,.s6{opacity:0;transform:translateY(22px);}
+.slide.active .s1{animation:up 0.55s 0.05s cubic-bezier(0.16,1,0.3,1) forwards;}
+.slide.active .s2{animation:up 0.55s 0.15s cubic-bezier(0.16,1,0.3,1) forwards;}
+.slide.active .s3{animation:up 0.55s 0.25s cubic-bezier(0.16,1,0.3,1) forwards;}
+.slide.active .s4{animation:up 0.55s 0.35s cubic-bezier(0.16,1,0.3,1) forwards;}
+.slide.active .s5{animation:up 0.55s 0.45s cubic-bezier(0.16,1,0.3,1) forwards;}
+.slide.active .s6{animation:up 0.55s 0.55s cubic-bezier(0.16,1,0.3,1) forwards;}
+@keyframes up{to{opacity:1;transform:none;}}
 
-  /* ─── STARFIELD ─── */
-  #starfield {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-  .star {
-    position: absolute;
-    border-radius: 50%;
-    background: white;
-    animation: twinkle var(--d) ease-in-out infinite alternate;
-  }
-  @keyframes twinkle { from { opacity: 0.1; } to { opacity: 0.9; } }
+/* ── LAYOUT ── */
+.si{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 32px;gap:0;}
+.tag{font-size:0.62rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#f0a500;margin-bottom:8px;}
+.big{font-family:'Bebas Neue',sans-serif;line-height:0.9;letter-spacing:3px;text-align:center;}
+.gold{color:#f0a500;}.sky{color:#38bdf8;}.grn{color:#34d399;}.lav{color:#c4b5fd;}.rose{color:#fb7185;}
+.muted{color:rgba(255,255,255,0.45);}
 
-  /* ─── NAV ─── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 32px;
-    background: rgba(10,14,39,0.85);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-  }
-  .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem;
-    letter-spacing: 3px;
-    color: var(--gold);
-  }
-  .nav-links {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-  .nav-links a {
-    color: rgba(255,255,255,0.55);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 6px 12px;
-    border-radius: 20px;
-    transition: all 0.2s;
-  }
-  .nav-links a:hover, .nav-links a.active {
-    color: white;
-    background: rgba(255,255,255,0.1);
-  }
+/* ══ SLIDE 1 HERO ══ */
+#s1{background:radial-gradient(ellipse 90% 55% at 50% -5%,rgba(240,165,0,.18) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 85% 90%,rgba(56,189,248,.07) 0%,transparent 60%),#0a0c1a;}
+.hero-verse{font-size:clamp(0.8rem,1.4vw,1rem);font-style:italic;color:rgba(255,255,255,.4);max-width:600px;text-align:center;line-height:1.7;margin-top:12px;border-top:1px solid rgba(255,255,255,.07);padding-top:12px;}
+.hero-verse strong{color:rgba(255,255,255,.72);font-style:normal;}
 
-  /* ─── SLIDES ─── */
-  section {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 100px 32px 60px;
-    z-index: 1;
-  }
-  section + section { border-top: 1px solid rgba(255,255,255,0.05); }
+/* ══ SLIDE 2 SCRIPTURE ══ */
+#s2{background:radial-gradient(ellipse 70% 70% at 50% 50%,rgba(99,102,241,.09) 0%,transparent 70%),#07091a;}
+.sc-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:clamp(20px,3.5vw,36px) clamp(22px,4.5vw,48px);max-width:760px;width:100%;text-align:center;position:relative;overflow:hidden;}
+.sc-card::before{content:'❝';position:absolute;top:-18px;left:18px;font-size:7rem;color:rgba(240,165,0,.06);font-family:serif;line-height:1;}
+.sc-ref{font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:2px;color:#f0a500;margin-bottom:14px;text-transform:uppercase;}
+.sc-text{font-size:clamp(0.95rem,2vw,1.25rem);font-weight:600;line-height:1.75;color:rgba(255,255,255,.88);}
+.sc-text em{color:#fbbf24;font-style:normal;font-weight:800;}
+.sheep-row{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:18px;flex-wrap:wrap;}
+.sheep{font-size:clamp(1.2rem,2.5vw,1.8rem);transition:all 0.3s;}
+.sheep.the-one{font-size:clamp(1.7rem,3.2vw,2.4rem);filter:drop-shadow(0 0 14px rgba(240,165,0,.9));}
+.sheep.gone{opacity:.15;}
 
-  /* ─── SLIDE 1: HERO ─── */
-  #hero {
-    background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(240,165,0,0.12) 0%, transparent 70%),
-                radial-gradient(ellipse 60% 50% at 80% 80%, rgba(56,189,248,0.08) 0%, transparent 60%),
-                var(--navy);
-    text-align: center;
-    flex-direction: column;
-    gap: 32px;
-  }
-  .hero-badge {
-    display: inline-block;
-    background: rgba(240,165,0,0.12);
-    border: 1px solid rgba(240,165,0,0.3);
-    color: var(--gold);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    padding: 8px 20px;
-    border-radius: 40px;
-    animation: fadeSlideUp 0.6s ease both;
-  }
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(4rem, 12vw, 9rem);
-    line-height: 0.9;
-    letter-spacing: 4px;
-    animation: fadeSlideUp 0.7s 0.1s ease both;
-  }
-  .hero-title span { color: var(--gold); }
-  .hero-sub {
-    font-size: clamp(1rem, 2.5vw, 1.4rem);
-    color: rgba(255,255,255,0.65);
-    font-weight: 300;
-    max-width: 560px;
-    line-height: 1.6;
-    animation: fadeSlideUp 0.7s 0.2s ease both;
-  }
-  .hero-sub strong { color: var(--sky); font-weight: 600; }
-  .hero-cta {
-    display: flex;
-    gap: 14px;
-    justify-content: center;
-    flex-wrap: wrap;
-    animation: fadeSlideUp 0.7s 0.3s ease both;
-  }
-  .btn-primary {
-    background: var(--gold);
-    color: var(--ink);
-    font-weight: 800;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
-    padding: 14px 32px;
-    border-radius: 40px;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240,165,0,0.35); }
-  .btn-ghost {
-    background: rgba(255,255,255,0.07);
-    color: white;
-    font-weight: 600;
-    font-size: 0.9rem;
-    padding: 14px 32px;
-    border-radius: 40px;
-    border: 1px solid rgba(255,255,255,0.15);
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-  .btn-ghost:hover { background: rgba(255,255,255,0.12); }
+/* ══ SLIDE 3 PRINCIPLE ══ */
+#s3{background:radial-gradient(ellipse 80% 50% at 0% 100%,rgba(244,63,94,.07) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 100% 0%,rgba(56,189,248,.06) 0%,transparent 55%),#0a0c1a;}
+.p-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:940px;margin-top:18px;}
+.p-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:20px 22px;position:relative;overflow:hidden;}
+.p-card .bar{position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0;}
+.p-card h3{font-size:clamp(0.82rem,1.4vw,0.96rem);font-weight:800;margin-bottom:7px;}
+.p-card p{font-size:clamp(0.72rem,1.2vw,0.84rem);color:rgba(255,255,255,.5);line-height:1.6;}
+.p-card p strong{color:white;}
 
-  .hero-stat-row {
-    display: flex;
-    gap: 40px;
-    justify-content: center;
-    flex-wrap: wrap;
-    animation: fadeSlideUp 0.7s 0.4s ease both;
-  }
-  .hero-stat { text-align: center; }
-  .hero-stat .num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.8rem;
-    line-height: 1;
-    color: var(--gold);
-  }
-  .hero-stat .lbl {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--slate);
-    margin-top: 4px;
-  }
+/* ══ SLIDE 4 TRACKER INV ══ */
+#s4{background:radial-gradient(ellipse 70% 50% at 100% 0%,rgba(245,158,11,.08) 0%,transparent 55%),#07091a;}
+.tw{width:100%;max-width:980px;display:flex;flex-direction:column;gap:0;margin-top:10px;}
+.th{background:linear-gradient(135deg,#92400e,#b45309);border-radius:14px 14px 0 0;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;}
+.th h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(0.85rem,1.8vw,1.2rem);letter-spacing:2px;}
+.th p{font-size:0.62rem;opacity:.7;margin-top:1px;}
+.ttabs{display:flex;gap:6px;}
+.ttab{padding:5px 12px;border-radius:8px;font-size:0.7rem;font-weight:800;border:2px solid transparent;}
+.ttab.on{background:linear-gradient(135deg,#f59e0b,#d97706);color:white;border-color:#92400e;}
+.ttab.off{background:rgba(255,255,255,.9);color:#78350f;}
+.tqnav{background:linear-gradient(90deg,#b45309,#c2712f);padding:6px 14px;display:flex;align-items:center;gap:7px;}
+.tqnav span{font-size:0.68rem;font-weight:800;color:rgba(255,255,255,.8);}
+.tqb{padding:3px 10px;border-radius:6px;font-size:0.64rem;font-weight:800;background:rgba(255,255,255,.18);color:white;border:1px solid rgba(255,255,255,.28);}
+.tqb.sel{background:white;color:#b45309;}
+.ttable{background:white;border-radius:0 0 14px 14px;overflow:hidden;width:100%;}
+.tthead th{background:linear-gradient(135deg,#f59e0b,#d97706);color:white;font-size:0.65rem;font-weight:800;padding:7px 8px;text-align:left;white-space:nowrap;}
+.tthead th:not(:first-child){text-align:center;}
+.ttr{border-bottom:1px solid #fef3c7;}
+.ttr:last-child{border-bottom:none;}
+.ttr:nth-child(even) td{background:#fffbeb;}
+.ttd{padding:6px 8px;font-size:0.68rem;color:#1f2937;vertical-align:middle;}
+.tnm{display:flex;align-items:center;gap:5px;}
+.tnm .em{font-size:1.1rem;}.tnm .nm{font-weight:800;font-size:0.74rem;color:#111;}.tnm .gl{font-size:0.58rem;color:#6b7280;}
+.ic{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;min-height:28px;align-items:center;}
+.ie{font-size:1rem;}
+.ab{font-size:1rem;color:#d1d5db;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border-radius:5px;border:1.5px dashed #e5e7eb;}
+.sp{background:linear-gradient(135deg,#f59e0b,#d97706);color:white;padding:3px 7px;border-radius:7px;font-size:0.62rem;font-weight:800;text-align:center;}
+.sp.g{background:linear-gradient(135deg,#10b981,#059669);}
 
-  @keyframes fadeSlideUp {
-    from { opacity: 0; transform: translateY(28px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+/* ══ SLIDE 5 TRACKER RET ══ */
+#s5{background:radial-gradient(ellipse 70% 50% at 0% 0%,rgba(16,185,129,.09) 0%,transparent 60%),#07091a;}
+.th.grnh{background:linear-gradient(135deg,#065f46,#047857);}
+.ttab.gon{background:linear-gradient(135deg,#10b981,#059669);color:white;}
+.tqnav.grnh{background:linear-gradient(90deg,#047857,#059669);}
+.tthead.grnh th{background:linear-gradient(135deg,#10b981,#059669);}
 
-  /* ─── SECTION HEADER ─── */
-  .section-header {
-    text-align: center;
-    margin-bottom: 56px;
-  }
-  .section-tag {
-    display: inline-block;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 12px;
-  }
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    letter-spacing: 2px;
-    line-height: 1;
-  }
-  .section-desc {
-    margin-top: 16px;
-    color: rgba(255,255,255,0.55);
-    font-size: 1rem;
-    line-height: 1.7;
-    max-width: 560px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+/* ══ SLIDE 6 FOCUS SHIFT ══ */
+#s6{background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(240,165,0,.1) 0%,transparent 70%),#07091a;}
+.ff-wrap{width:100%;max-width:820px;margin-top:10px;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.ff-row{display:flex;align-items:center;justify-content:center;gap:4px;padding:5px 0;width:100%;position:relative;border-bottom:1px dashed rgba(255,255,255,.06);}
+.ff-row:last-child{border:none;}
+.ffs{font-size:clamp(.9rem,1.8vw,1.4rem);opacity:.22;}
+.ffa{opacity:.72;}
+.ffo{font-size:clamp(1.7rem,3.2vw,2.5rem)!important;opacity:1!important;filter:drop-shadow(0 0 16px rgba(240,165,0,1));animation:fl 2s ease-in-out infinite alternate;}
+@keyframes fl{from{transform:translateY(0);}to{transform:translateY(-5px);}}
+.ff-lbl{position:absolute;right:0;font-size:clamp(.58rem,1vw,.72rem);font-weight:800;color:rgba(255,255,255,.3);}
+.ff-sp{font-size:clamp(.58rem,1vw,.72rem);font-weight:800;color:#f0a500;letter-spacing:1px;text-transform:uppercase;margin-left:8px;}
+.pstrip{display:flex;gap:8px;align-items:center;margin-top:18px;flex-wrap:wrap;justify-content:center;}
+.pc{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.pb{width:clamp(40px,5.5vw,52px);height:clamp(40px,5.5vw,52px);border-radius:50%;border:2px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:clamp(.9rem,1.8vw,1.4rem);}
+.pb.lit{border-color:#f0a500;box-shadow:0 0 14px rgba(240,165,0,.55);background:rgba(240,165,0,.1);}
+.plbl{font-size:clamp(.5rem,.85vw,.62rem);font-weight:700;color:rgba(255,255,255,.3);text-align:center;max-width:65px;}
+.plbl.lit{color:#f0a500;}
+.parr{font-size:.9rem;color:rgba(255,255,255,.13);margin-bottom:18px;}
 
-  /* ─── SLIDE 2: THE PROBLEM / WHY ─── */
-  #why {
-    background: radial-gradient(ellipse 80% 60% at 0% 50%, rgba(139,92,246,0.08) 0%, transparent 60%), var(--navy);
-  }
-  .why-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px;
-    max-width: 900px;
-    width: 100%;
-  }
-  .why-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 20px;
-    padding: 28px;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-  .why-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    background: linear-gradient(135deg, var(--c1), var(--c2));
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .why-card:hover::before { opacity: 0.06; }
-  .why-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-3px); }
-  .why-icon { font-size: 2.2rem; margin-bottom: 14px; position: relative; z-index: 1; }
-  .why-card h3 {
-    font-weight: 700;
-    font-size: 1.05rem;
-    margin-bottom: 8px;
-    position: relative;
-    z-index: 1;
-  }
-  .why-card p {
-    color: rgba(255,255,255,0.5);
-    font-size: 0.88rem;
-    line-height: 1.65;
-    position: relative;
-    z-index: 1;
-  }
-  .why-card.before { --c1: #f43f5e; --c2: #ef4444; border-color: rgba(244,63,94,0.2); }
-  .why-card.after { --c1: #10b981; --c2: #059669; border-color: rgba(16,185,129,0.2); }
-  .why-card.before h3 { color: #fca5a5; }
-  .why-card.after h3 { color: #6ee7b7; }
+/* ══ SLIDE 7 INDICATORS ══ */
+#s7{background:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(99,102,241,.08) 0%,transparent 60%),#07091a;}
+.ig{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;width:100%;max-width:940px;margin-top:12px;}
+.ic2{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:6px 3px;text-align:center;transition:all 0.2s;}
+.ic2:hover{background:rgba(255,255,255,.09);transform:translateY(-2px);}
+.ic2 .ie2{font-size:clamp(.9rem,1.6vw,1.25rem);}
+.ic2 .cd{font-family:'DM Mono',monospace;font-size:clamp(.48rem,.82vw,.6rem);font-weight:700;padding:2px 4px;border-radius:4px;margin-top:2px;display:inline-block;}
+.ic2 .nm2{font-size:clamp(.45rem,.78vw,.58rem);color:rgba(255,255,255,.38);line-height:1.3;margin-top:2px;}
+.inv .cd{background:rgba(245,158,11,.2);color:#fbbf24;}
+.ret .cd{background:rgba(16,185,129,.2);color:#34d399;}
+.bap .cd{background:rgba(244,63,94,.2);color:#fb7185;}
+.cov .cd{background:rgba(139,92,246,.2);color:#c4b5fd;}
 
-  /* ─── SLIDE 3: FEATURES ─── */
-  #features {
-    background: radial-gradient(ellipse 80% 50% at 100% 30%, rgba(56,189,248,0.07) 0%, transparent 60%), var(--navy);
-    flex-direction: column;
-  }
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 16px;
-    max-width: 1100px;
-    width: 100%;
-  }
-  .feat-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 18px;
-    padding: 24px 22px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s;
-    cursor: pointer;
-  }
-  .feat-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255,255,255,0.15);
-    background: rgba(255,255,255,0.06);
-  }
-  .feat-card:hover .feat-glow { opacity: 1; }
-  .feat-glow {
-    position: absolute;
-    inset: 0;
-    border-radius: 18px;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .feat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3.5rem;
-    line-height: 1;
-    opacity: 0.07;
-    position: absolute;
-    top: 12px; right: 16px;
-  }
-  .feat-emoji { font-size: 1.8rem; margin-bottom: 10px; }
-  .feat-title {
-    font-weight: 700;
-    font-size: 0.95rem;
-    margin-bottom: 6px;
-    position: relative;
-    z-index: 1;
-  }
-  .feat-desc {
-    color: rgba(255,255,255,0.45);
-    font-size: 0.82rem;
-    line-height: 1.6;
-    position: relative;
-    z-index: 1;
-  }
-  .feat-tag {
-    display: inline-block;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 20px;
-    margin-top: 10px;
-    position: relative;
-    z-index: 1;
-  }
+/* ══ SLIDE 8 COVENANT PATH ══ */
+#s8{background:radial-gradient(ellipse 80% 50% at 50% 100%,rgba(139,92,246,.11) 0%,transparent 60%),#07091a;}
+.pflow{display:flex;align-items:center;width:100%;max-width:900px;margin-top:14px;justify-content:center;}
+.pnode{display:flex;flex-direction:column;align-items:center;gap:7px;flex:1;}
+.pball{width:clamp(48px,6.5vw,66px);height:clamp(48px,6.5vw,66px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:clamp(1.1rem,2vw,1.7rem);border:2px solid rgba(255,255,255,.1);}
+.pball.lit{border-color:#8b5cf6;box-shadow:0 0 18px rgba(139,92,246,.5);background:rgba(139,92,246,.13);}
+.pnlbl{font-size:clamp(.55rem,.9vw,.7rem);font-weight:700;color:rgba(255,255,255,.45);text-align:center;max-width:75px;line-height:1.3;}
+.pnlbl.lit{color:#c4b5fd;}
+.pcon{width:24px;height:2px;background:rgba(255,255,255,.07);margin-bottom:24px;}
+.pcon.lit{background:#8b5cf6;}
+.og{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;width:100%;max-width:900px;margin-top:16px;}
+.ob{background:rgba(255,255,255,.03);border:1px solid rgba(139,92,246,.18);border-radius:12px;padding:12px 13px;}
+.ob h4{font-size:clamp(.58rem,.92vw,.68rem);font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#c4b5fd;margin-bottom:8px;}
+.or{display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:clamp(.58rem,.92vw,.68rem);color:rgba(255,255,255,.48);}
+.or:last-child{border:none;}
+.oc{width:13px;height:13px;border-radius:3px;border:1.5px solid rgba(139,92,246,.32);display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0;}
+.oc.done{background:#8b5cf6;border-color:#8b5cf6;color:white;}
 
-  /* ─── SLIDE 4: THE 5 FOCUS AREAS ─── */
-  #focus5 {
-    background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(240,165,0,0.06) 0%, transparent 70%), var(--navy);
-    flex-direction: column;
-  }
-  .f5-track {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 1000px;
-    width: 100%;
-  }
-  .f5-pill {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 50px;
-    padding: 14px 22px;
-    transition: all 0.3s;
-    cursor: default;
-    position: relative;
-    overflow: hidden;
-  }
-  .f5-pill:hover {
-    transform: scale(1.04);
-    background: rgba(255,255,255,0.08);
-  }
-  .f5-pill::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50px;
-    background: var(--grad);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .f5-pill:hover::after { opacity: 0.1; }
-  .f5-em { font-size: 1.5rem; position: relative; z-index: 1; }
-  .f5-code {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: rgba(255,255,255,0.4);
-    position: relative;
-    z-index: 1;
-  }
-  .f5-name {
-    font-size: 0.88rem;
-    font-weight: 600;
-    position: relative;
-    z-index: 1;
-  }
+/* ══ SLIDE 9 REPORT ══ */
+#s9{background:radial-gradient(ellipse 70% 50% at 80% 20%,rgba(245,158,11,.08) 0%,transparent 55%),#07091a;}
+.rw{width:100%;max-width:840px;margin-top:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:18px;overflow:hidden;}
+.rh{background:linear-gradient(135deg,#b45309,#d97706);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;}
+.rh h2{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:2px;}
+.rh p{font-size:.62rem;opacity:.75;margin-top:1px;}
+.rp{background:rgba(255,255,255,.18);border:none;color:white;padding:5px 12px;border-radius:7px;font-size:.68rem;font-weight:800;}
+.rstats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 20px;}
+.rs{background:rgba(255,255,255,.04);border-radius:10px;padding:10px 6px;text-align:center;}
+.rs .n{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;line-height:1;}
+.rs .l{font-size:.56rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.38);margin-top:1px;}
+.rb{padding:0 20px 14px;}
+.rl{font-size:.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.32);margin:8px 0 5px;}
+.rrow{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);border-radius:7px;padding:6px 11px;margin-bottom:3px;font-size:.7rem;}
+.rtgs{display:flex;gap:3px;flex-wrap:wrap;}
+.rtg{font-size:.56rem;font-weight:800;padding:2px 6px;border-radius:4px;background:rgba(251,191,36,.14);color:#fbbf24;}
+.rpill{padding:3px 9px;border-radius:20px;font-size:.64rem;font-weight:800;}
+.rpill.red{background:rgba(244,63,94,.1);color:#fca5a5;}
+.rpill.pray{background:rgba(99,102,241,.12);color:#a5b4fc;}
 
-  .indicators-section {
-    margin-top: 40px;
-    max-width: 1000px;
-    width: 100%;
-  }
-  .ind-label {
-    text-align: center;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--slate);
-    margin-bottom: 16px;
-  }
-  .ind-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-  }
-  .ind-chip {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 0.75rem;
-    font-family: 'DM Mono', monospace;
-    color: rgba(255,255,255,0.55);
-    transition: all 0.2s;
-  }
-  .ind-chip:hover { background: rgba(255,255,255,0.1); color: white; }
-
-  /* ─── SLIDE 5: COVENANT PATH ─── */
-  #covenant {
-    background: radial-gradient(ellipse 80% 60% at 20% 80%, rgba(139,92,246,0.1) 0%, transparent 60%), var(--navy);
-    flex-direction: column;
-  }
-  .path-flow {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 1000px;
-    width: 100%;
-  }
-  .path-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 10px;
-    flex: 1;
-    min-width: 120px;
-    max-width: 160px;
-  }
-  .path-circle {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    border: 2px solid rgba(255,255,255,0.1);
-    position: relative;
-    transition: all 0.3s;
-  }
-  .path-circle:hover { transform: scale(1.1); }
-  .path-step-name {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.7);
-    line-height: 1.3;
-  }
-  .path-arrow {
-    font-size: 1.2rem;
-    color: rgba(255,255,255,0.2);
-    margin: 0 4px;
-    margin-bottom: 30px;
-  }
-  .ord-section {
-    margin-top: 40px;
-    max-width: 900px;
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 14px;
-  }
-  .ord-box {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(139,92,246,0.2);
-    border-radius: 14px;
-    padding: 16px 18px;
-  }
-  .ord-box h4 {
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #c4b5fd;
-    margin-bottom: 10px;
-  }
-  .ord-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.6);
-  }
-  .ord-item:last-child { border-bottom: none; }
-  .ord-check {
-    width: 16px;
-    height: 16px;
-    border-radius: 4px;
-    border: 1.5px solid rgba(139,92,246,0.4);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    flex-shrink: 0;
-  }
-  .ord-check.done { background: #8b5cf6; border-color: #8b5cf6; color: white; }
-
-  /* ─── SLIDE 6: WARD COUNCIL REPORT ─── */
-  #report {
-    background: radial-gradient(ellipse 80% 60% at 80% 20%, rgba(245,158,11,0.08) 0%, transparent 60%), var(--navy);
-    flex-direction: column;
-  }
-  .report-mockup {
-    max-width: 700px;
-    width: 100%;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 24px;
-    overflow: hidden;
-  }
-  .report-header {
-    background: linear-gradient(135deg, #b45309, #d97706);
-    padding: 24px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .report-header h2 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    letter-spacing: 2px;
-  }
-  .report-header p { font-size: 0.8rem; opacity: 0.75; margin-top: 3px; }
-  .report-print-btn {
-    background: rgba(255,255,255,0.15);
-    border: none;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 10px;
-    font-size: 0.78rem;
-    font-weight: 700;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  .report-body { padding: 24px; }
-  .report-stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-  @media (max-width: 600px) { .report-stats { grid-template-columns: repeat(2, 1fr); } }
-  .rstat {
-    text-align: center;
-    background: rgba(255,255,255,0.04);
-    border-radius: 12px;
-    padding: 14px 8px;
-  }
-  .rstat .n {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-  }
-  .rstat .l { font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--slate); margin-top: 2px; }
-  .report-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(255,255,255,0.03);
-    border-radius: 10px;
-    padding: 10px 14px;
-    margin-bottom: 6px;
-    font-size: 0.83rem;
-  }
-  .report-row .tags { display: flex; gap: 4px; flex-wrap: wrap; }
-  .rtag {
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 6px;
-    background: rgba(251,191,36,0.15);
-    color: var(--gold2);
-  }
-  .report-section-label {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--slate);
-    margin: 16px 0 8px;
-  }
-
-  /* ─── SLIDE 7: EVENTS & CALENDAR ─── */
-  #events {
-    background: radial-gradient(ellipse 60% 60% at 50% 100%, rgba(56,189,248,0.08) 0%, transparent 60%), var(--navy);
-    flex-direction: column;
-  }
-  .cal-mockup {
-    max-width: 680px;
-    width: 100%;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 24px;
-    overflow: hidden;
-  }
-  .cal-top {
-    background: linear-gradient(135deg, #0f4c75, #1565c0);
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .cal-top h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 2px; }
-  .cal-top p { font-size: 0.78rem; opacity: 0.7; }
-  .cal-nav-btns { display: flex; gap: 8px; }
-  .cal-nav-btn {
-    background: rgba(255,255,255,0.12);
-    border: none;
-    color: white;
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    cursor: pointer;
-  }
-  .cal-grid {
-    padding: 20px 24px;
-  }
-  .cal-days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-    margin-bottom: 8px;
-  }
-  .cal-day-name {
-    text-align: center;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--slate);
-    padding: 4px;
-  }
-  .cal-cell {
-    aspect-ratio: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: rgba(255,255,255,0.55);
-    cursor: pointer;
-    transition: all 0.15s;
-    position: relative;
-  }
-  .cal-cell:hover { background: rgba(255,255,255,0.08); color: white; }
-  .cal-cell.today { background: var(--sky); color: var(--ink); font-weight: 800; }
-  .cal-cell.has-event::after {
-    content: '';
-    position: absolute;
-    bottom: 3px;
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: var(--gold);
-  }
-  .cal-cell.invite-ready::after { background: #34d399; }
-  .event-list { padding: 0 24px 20px; }
-  .event-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 14px;
-    background: rgba(255,255,255,0.03);
-    border-radius: 12px;
-    margin-bottom: 6px;
-    font-size: 0.83rem;
-    border-left: 3px solid transparent;
-    transition: all 0.2s;
-  }
-  .event-item:hover { background: rgba(255,255,255,0.06); }
-  .event-item.invite { border-left-color: #34d399; }
-  .event-item.church { border-left-color: var(--sky); }
-  .event-emoji { font-size: 1.2rem; }
-  .event-info .name { font-weight: 600; font-size: 0.85rem; }
-  .event-info .meta { font-size: 0.72rem; color: var(--slate); margin-top: 2px; }
-  .invite-badge {
-    margin-left: auto;
-    font-size: 0.65rem;
-    font-weight: 700;
-    background: rgba(52,211,153,0.15);
-    color: #34d399;
-    padding: 3px 10px;
-    border-radius: 20px;
-    white-space: nowrap;
-  }
-
-  /* ─── SLIDE 8: PRAYER LIST ─── */
-  #prayer {
-    background: radial-gradient(ellipse 70% 60% at 10% 40%, rgba(16,185,129,0.07) 0%, transparent 60%), var(--navy);
-    flex-direction: column;
-  }
-  .prayer-mockup {
-    max-width: 500px;
-    width: 100%;
-  }
-  .prayer-header-block {
-    background: linear-gradient(135deg, #065f46, #047857);
-    border-radius: 20px 20px 0 0;
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .prayer-header-block .icon { font-size: 2rem; }
-  .prayer-header-block h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 2px; }
-  .prayer-header-block p { font-size: 0.78rem; opacity: 0.7; margin-top: 2px; }
-  .prayer-body {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(16,185,129,0.15);
-    border-top: none;
-    border-radius: 0 0 20px 20px;
-    padding: 20px 24px;
-  }
-  .prayer-input-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  .prayer-input {
-    flex: 1;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(16,185,129,0.2);
-    border-radius: 10px;
-    padding: 10px 14px;
-    color: white;
-    font-size: 0.85rem;
-    outline: none;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .prayer-add-btn {
-    background: var(--emerald);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 16px;
-    font-weight: 700;
-    font-size: 0.85rem;
-    cursor: pointer;
-  }
-  .prayer-person {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 10px;
-    margin-bottom: 6px;
-    font-size: 0.83rem;
-    animation: fadeSlideUp 0.4s ease both;
-  }
-  .prayer-person .days {
-    margin-left: auto;
-    font-size: 0.68rem;
-    color: var(--slate);
-  }
-
-  /* ─── SLIDE 9: ANALYTICS/CHART ─── */
-  #analytics {
-    background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(244,63,94,0.06) 0%, transparent 60%), var(--navy);
-    flex-direction: column;
-  }
-  .chart-container {
-    max-width: 780px;
-    width: 100%;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 24px;
-    padding: 28px;
-  }
-  .chart-title-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-  }
-  .chart-title { font-weight: 700; font-size: 1.05rem; }
-  .chart-sub { font-size: 0.78rem; color: var(--slate); margin-top: 2px; }
-  .chart-legend { display: flex; gap: 14px; flex-wrap: wrap; }
-  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--slate); }
-  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .bar-chart {
-    display: flex;
-    align-items: flex-end;
-    gap: 12px;
-    height: 180px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    position: relative;
-  }
-  .bar-group {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-    height: 100%;
-    justify-content: flex-end;
-  }
-  .bar-pair { display: flex; gap: 3px; align-items: flex-end; width: 100%; }
-  .bar {
-    flex: 1;
-    border-radius: 4px 4px 0 0;
-    transition: all 0.3s;
-    cursor: pointer;
-    position: relative;
-  }
-  .bar:hover { opacity: 0.8; }
-  .bar-tooltip {
-    display: none;
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.8);
-    color: white;
-    font-size: 0.68rem;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 6px;
-    white-space: nowrap;
-    margin-bottom: 4px;
-  }
-  .bar:hover .bar-tooltip { display: block; }
-  .bar-label {
-    font-size: 0.65rem;
-    color: var(--slate);
-    font-family: 'DM Mono', monospace;
-    margin-top: 6px;
-    text-transform: uppercase;
-  }
-  .chart-grid-lines {
-    position: absolute;
-    inset: 0;
-    bottom: 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    pointer-events: none;
-  }
-  .grid-line {
-    border-top: 1px solid rgba(255,255,255,0.05);
-    width: 100%;
-  }
-
-  /* ─── SLIDE 10: TECH STACK ─── */
-  #tech {
-    background: radial-gradient(ellipse 60% 60% at 80% 50%, rgba(56,189,248,0.07) 0%, transparent 60%), var(--navy);
-    flex-direction: column;
-  }
-  .tech-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    max-width: 900px;
-    width: 100%;
-  }
-  .tech-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 18px;
-    padding: 24px 20px;
-    text-align: center;
-    transition: all 0.3s;
-  }
-  .tech-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.14); }
-  .tech-icon { font-size: 2.4rem; margin-bottom: 10px; }
-  .tech-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
-  .tech-desc { font-size: 0.78rem; color: var(--slate); line-height: 1.5; }
-
-  /* ─── SLIDE 11: LIVE DEMO CTA ─── */
-  #demo {
-    background: radial-gradient(ellipse 100% 80% at 50% 100%, rgba(240,165,0,0.14) 0%, transparent 70%), var(--navy);
-    flex-direction: column;
-    text-align: center;
-    gap: 32px;
-  }
-  .demo-glow {
-    width: 200px; height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(240,165,0,0.25) 0%, transparent 70%);
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    animation: pulse-glow 3s ease-in-out infinite;
-    pointer-events: none;
-  }
-  @keyframes pulse-glow {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-    50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
-  }
-  .qr-box {
-    background: white;
-    border-radius: 20px;
-    padding: 16px;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-  .qr-inner {
-    width: 120px; height: 120px;
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: 1px;
-  }
-  .qr-dot { border-radius: 1px; }
-  .qr-url { font-size: 0.68rem; color: var(--ink); font-family: 'DM Mono', monospace; font-weight: 600; }
-  .demo-url {
-    font-family: 'DM Mono', monospace;
-    font-size: 1rem;
-    color: var(--sky);
-    background: rgba(56,189,248,0.08);
-    border: 1px solid rgba(56,189,248,0.2);
-    padding: 14px 28px;
-    border-radius: 12px;
-    letter-spacing: 0.5px;
-  }
-
-  /* ─── UTILITIES ─── */
-  .reveal {
-    opacity: 0;
-    transform: translateY(32px);
-    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
-
-  .container { max-width: 1100px; width: 100%; margin: 0 auto; }
-
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 640px) {
-    nav { padding: 12px 16px; }
-    .nav-links { display: none; }
-    section { padding: 90px 20px 50px; }
-    .path-flow { gap: 4px; }
-    .path-arrow { display: none; }
-    .report-stats { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  /* ─── PROGRESS BAR ─── */
-  #progress-bar {
-    position: fixed;
-    top: 0; left: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--gold), var(--sky));
-    z-index: 200;
-    transition: width 0.1s;
-    width: 0%;
-  }
-
-  /* ─── FLOATING SLIDE COUNTER ─── */
-  #slide-counter {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    background: rgba(10,14,39,0.9);
-    border: 1px solid rgba(255,255,255,0.1);
-    backdrop-filter: blur(12px);
-    border-radius: 30px;
-    padding: 8px 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--slate);
-    z-index: 100;
-  }
-  #slide-counter span { color: white; font-weight: 700; }
+/* ══ SLIDE 10 CLOSE ══ */
+#s10{background:radial-gradient(ellipse 100% 70% at 50% 105%,rgba(240,165,0,.17) 0%,transparent 65%),#07091a;}
+.cglow{position:absolute;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(240,165,0,.18) 0%,transparent 70%);pointer-events:none;animation:pg 3s ease-in-out infinite;}
+@keyframes pg{0%,100%{transform:scale(1);opacity:.6;}50%{transform:scale(1.3);opacity:1;}}
+.ubox{font-family:'DM Mono',monospace;font-size:clamp(.72rem,1.3vw,.92rem);background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.18);color:#38bdf8;padding:11px 26px;border-radius:11px;letter-spacing:.5px;margin-top:14px;}
+.csr{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;margin-top:18px;}
+.cs .n{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.5vw,3.2rem);line-height:1;color:#f0a500;}
+.cs .l{font-size:.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:2px;}
+.ob2{margin-top:20px;background:#f0a500;color:#111;font-weight:900;font-size:clamp(.82rem,1.4vw,.96rem);padding:13px 34px;border-radius:40px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all 0.2s;}
+.ob2:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(240,165,0,.4);}
 </style>
 </head>
 <body>
 
-<!-- Starfield -->
-<div id="starfield"></div>
+<div id="arrow-left" onclick="prevSlide()">‹</div>
+<div id="arrow-right" onclick="nextSlide()">›</div>
+<div id="dots"></div>
+<div id="counter"><span id="ci">1</span>/<span id="ct">10</span></div>
 
-<!-- Progress bar -->
-<div id="progress-bar"></div>
-
-<!-- Slide counter -->
-<div id="slide-counter">Slide <span id="current-slide">1</span> / <span id="total-slides">9</span></div>
-
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">⛪ Focus 5</div>
-  <div class="nav-links">
-    <a href="#hero">Intro</a>
-    <a href="#why">Why</a>
-    <a href="#features">Features</a>
-    <a href="#focus5">The 5</a>
-    <a href="#covenant">Path</a>
-    <a href="#report">Reports</a>
-    <a href="#events">Calendar</a>
-    <a href="#prayer">Prayer</a>
-    <a href="#demo">Live Demo</a>
+<!-- ════ SLIDE 1 — TITLE ════ -->
+<div class="slide active" id="s1">
+  <div class="si" style="gap:6px;">
+    <div class="tag s1">Riverton 24th Tongan Ward · 2025</div>
+    <div class="big s2" style="font-size:clamp(4.5rem,12vw,9.5rem);">FOCUS<br><span class="gold">FIVE</span></div>
+    <div class="s3" style="font-size:clamp(.9rem,2vw,1.3rem);font-weight:700;letter-spacing:4px;color:rgba(255,255,255,.4);text-transform:uppercase;">Focus on the <span class="gold">One</span></div>
+    <div class="hero-verse s4">"What man of you, having a hundred sheep, if he lose one of them, doth not leave the ninety and nine… <strong>and go after that which is lost?</strong>" — Matthew 18:11–14</div>
+    <div class="s5" style="font-size:clamp(.65rem,1.1vw,.78rem);font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.22);margin-top:6px;">Missionary Tracker · Riverton 24th Ward</div>
   </div>
-</nav>
+</div>
 
-<!-- ═══ SLIDE 1: HERO ═══ -->
-<section id="hero">
-  <div class="hero-badge">Riverton 24th Tongan Ward · 2025</div>
-  <h1 class="hero-title">FOCUS<br><span>FIVE</span><br>TRACKER</h1>
-  <p class="hero-sub">A custom-built missionary tool that helps our ward <strong>see every soul, track every step</strong>, and never let anyone fall through the cracks.</p>
-  <div class="hero-stat-row">
-    <div class="hero-stat"><div class="num">21</div><div class="lbl">Activity Indicators</div></div>
-    <div class="hero-stat"><div class="num">5</div><div class="lbl">Core Focus Areas</div></div>
-    <div class="hero-stat"><div class="num">100%</div><div class="lbl">Real-Time Sync</div></div>
-    <div class="hero-stat"><div class="num">∞</div><div class="lbl">People We Can Track</div></div>
-  </div>
-  <div class="hero-cta">
-    <a href="https://filipefa1998-sudo.github.io/focus5-tracker/" target="_blank" class="btn-primary">🚀 Open Live Tracker</a>
-    <a href="#why" class="btn-ghost">See How It Works ↓</a>
-  </div>
-</section>
-
-<!-- ═══ SLIDE 2: WHY ═══ -->
-<section id="why">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="section-tag">The Problem → Solution</div>
-      <h2 class="section-title">WHY WE<br>BUILT THIS</h2>
-      <p class="section-desc">Ward councils without a tracker are flying blind. Paper lists get lost. Spreadsheets go stale. People get forgotten.</p>
+<!-- ════ SLIDE 2 — SCRIPTURE ════ -->
+<div class="slide" id="s2">
+  <div class="si" style="gap:14px;">
+    <div class="tag s1">The Foundation</div>
+    <div class="sc-card s2">
+      <div class="sc-ref">Matthew 18 : 11 – 14</div>
+      <div class="sc-text">"For the Son of man is come to save that which was lost. How think ye? If a man have a hundred sheep, and one of them be gone astray, doth he not leave the <em>ninety and nine</em>, and goeth into the mountains, and seeketh that which is gone astray?<br><br>…<em>Even so it is not the will of your Father which is in heaven, that one of these little ones should perish.</em>"</div>
     </div>
-    <div class="why-grid">
-      <div class="why-card before reveal reveal-delay-1">
-        <div class="why-icon">😓</div>
-        <h3>❌ Before Focus Five</h3>
-        <p>Scattered paper notes. No visibility between meetings. Investigators lost track of. No one knew who needed a visit, a text, or a prayer.</p>
-      </div>
-      <div class="why-card before reveal reveal-delay-2">
-        <div class="why-icon">🔍</div>
-        <h3>❌ No Accountability</h3>
-        <p>Hard to know which family member was assigned to whom. Progress only visible on Sunday, if someone remembered to report it.</p>
-      </div>
-      <div class="why-card after reveal reveal-delay-3">
-        <div class="why-icon">✅</div>
-        <h3>✅ With Focus Five</h3>
-        <p>Every investigator and returning member visible in real-time. Every invitation, attendance, and milestone logged and tracked month-by-month.</p>
-      </div>
-      <div class="why-card after reveal reveal-delay-4">
-        <div class="why-icon">🏆</div>
-        <h3>✅ Results We've Seen</h3>
-        <p>Ward council meetings got shorter and sharper. Leaders know exactly who needs attention. Covenant path milestones are celebrated together.</p>
-      </div>
+    <div class="sheep-row s3" id="sheep-row"></div>
+    <div class="s4" style="font-size:clamp(.68rem,1.1vw,.82rem);color:rgba(255,255,255,.3);font-style:italic;text-align:center;">Every name in our tracker is that one lost sheep. The ward — all 99 — work together to bring them home.</div>
+  </div>
+</div>
+
+<!-- ════ SLIDE 3 — THE PRINCIPLE ════ -->
+<div class="slide" id="s3">
+  <div class="si" style="gap:10px;">
+    <div class="tag s1">How We Apply It</div>
+    <div class="big s2" style="font-size:clamp(2.2rem,5.5vw,4.5rem);">FOCUS ON THE <span class="gold">ONE.</span><br><span style="font-size:.52em;color:rgba(255,255,255,.32);">MINISTER TO THE</span> <span style="font-size:.52em;">99.</span></div>
+    <div class="p-grid s3">
+      <div class="p-card"><div class="bar" style="background:linear-gradient(90deg,#f59e0b,#d97706);"></div><h3 class="gold">👤 Investigators</h3><p>Of everyone we're teaching, <strong>who is closest to progressing?</strong> That person gets the focused energy of the whole ward — invitations, prayer, visits, events.</p></div>
+      <div class="p-card"><div class="bar" style="background:linear-gradient(90deg,#10b981,#059669);"></div><h3 class="grn">💙 Returning Members</h3><p>Of all our less-active members, <strong>who is closest to coming back?</strong> One name. One family. The whole ward channels attention there first — then shifts when they return.</p></div>
+      <div class="p-card"><div class="bar" style="background:linear-gradient(90deg,#8b5cf6,#6d28d9);"></div><h3 class="lav">🔄 The Funnel</h3><p>Once the one comes back to the fold, <strong>focus shifts</strong> to the next person. The tracker makes this decision obvious — most indicators = closest to progressing.</p></div>
+      <div class="p-card"><div class="bar" style="background:linear-gradient(90deg,#38bdf8,#0284c7);"></div><h3 class="sky">📊 Why It Works</h3><p>Councils that try to focus on everyone focus on no one. This gives us <strong>one source of truth</strong> — one name to rally around each week.</p></div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ═══ SLIDE 3: FEATURES ═══ -->
-<section id="features">
-  <div class="container" style="display:flex;flex-direction:column;align-items:center;">
-    <div class="section-header reveal">
-      <div class="section-tag">Feature Overview</div>
-      <h2 class="section-title">EVERYTHING<br>IN ONE PLACE</h2>
-      <p class="section-desc">Nine powerful features that work together to keep your ward's missionary efforts organized and inspired.</p>
+<!-- ════ SLIDE 4 — TRACKER: INVESTIGATORS ════ -->
+<div class="slide" id="s4">
+  <div class="si" style="justify-content:flex-start;padding-top:16px;gap:6px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:980px;" class="s1">
+      <div><div class="tag" style="margin-bottom:2px;">Inside the Tracker</div><div class="big" style="font-size:clamp(1.7rem,3.8vw,2.8rem);">👤 INVESTIGATORS</div></div>
+      <div style="font-size:clamp(.68rem,1.1vw,.8rem);color:rgba(255,255,255,.4);max-width:280px;text-align:right;line-height:1.5;">🔥 = <span class="gold">Focus Person</span> — most indicators logged, closest to their next milestone.</div>
     </div>
-    <div class="features-grid">
-
-      <div class="feat-card reveal" style="border-color:rgba(56,189,248,0.2);">
-        <div class="feat-glow" style="background:radial-gradient(circle at 0% 0%, rgba(56,189,248,0.15), transparent 60%);"></div>
-        <div class="feat-num">1</div>
-        <div class="feat-emoji">👥</div>
-        <div class="feat-title">Investigators & Returning Members</div>
-        <div class="feat-desc">Two separate lists — investigators and returning members — each with names, emoji avatars, assigned family, personal goals, and notes.</div>
-        <span class="feat-tag" style="background:rgba(56,189,248,0.1);color:var(--sky);">Core</span>
-      </div>
-
-      <div class="feat-card reveal reveal-delay-1" style="border-color:rgba(240,165,0,0.2);">
-        <div class="feat-glow" style="background:radial-gradient(circle at 0% 0%, rgba(240,165,0,0.12), transparent 60%);"></div>
-        <div class="feat-num">2</div>
-        <div class="feat-emoji">📊</div>
-        <div class="feat-title">Monthly Activity Tracker</div>
-        <div class="feat-desc">Quarter-by-quarter progress grid. Click any indicator to log it. Color-coded by category. Navigate by quarter and see the full year at a glance.</div>
-        <span class="feat-tag" style="background:rgba(240,165,0,0.1);color:var(--gold);">Core</span>
-      </div>
-
-      <div class="feat-card reveal reveal-delay-2" style="border-color:rgba(139,92,246,0.2);">
-        <div class="feat-glow" style="background:radial-gradient(circle at 0% 0%, rgba(139,92,246,0.12), transparent 60%);"></div>
-        <div class="feat-num">3</div>
-        <div class="feat-emoji">📖</div>
-        <div class="feat-title">The Covenant Path</div>
-        <div class="feat-desc">When someone is baptized, they automatically move to this section. Track all ordinances (Aaronic Priesthood → Endowment) and self-reliance classes.</div>
-        <span class="feat-tag" style="background:rgba(139,92,246,0.1);color:#c4b5fd;">Milestone</span>
-      </div>
-
-      <div class="feat-card reveal reveal-delay-3" style="border-color:rgba(245,158,11,0.2);">
-        <div class="feat-glow" style="background:radial-gradient(circle at 0% 0%, rgba(245,158,11,0.12), transparent 60%);"></div>
-        <div class="feat-num">4</div>
-        <div class="feat-emoji">📋</div>
-        <div class="feat-title">Ward Council Report</div>
-        <div class="feat-desc">One-click report generation. Shows all activity this month, covenant path progress, who needs attention, and upcoming events. Printable.</div>
-        <span class="feat-tag" style="background:rgba(245,158,11,0.1);color:#fbbf24;">Leadership</span>
-      </div>
-
-      <div class="feat-card reveal" style="border-color:rgba(16,185,129,0.2);">
-        <div class="feat-glow" style="background:radial-gradient(circle at 0% 0%, rgba(16,185,129,0.12), transparent 60%);"></div>
-        <div class="feat-num">5</div>
-        <div class="feat-emoji">🙏</div>
-        <div class="feat-title">Prayer List</div>
-        <div class="feat-desc">A dedicated, always-visible prayer roll. Add names, notes, and see how many days they've been on the list. Synced to ward council reports.</div>
-        <span class="feat-tag" style="background:rgba(16,185,129,0.1);color:#34d399;">Spiritual</span>
-      </div>
-
-      <div class="feat-card reveal reveal-delay-1" style="border-color:rgba(56,189,248,0.2);">
-        <div class="feat-glow" style="background:radial-gradient(circle at 0% 0%, rgba(56,189,248,0.12), transparent 60%);"></div>
-        <div class="feat-num">6</div>
-        <div class="feat-emoji">📅</div>
-        <div class="feat-title">Ward Event Calendar</div>
-        <div class="feat-desc">Full calendar with list and month views. Mark events as "invite-ready" to surface them in reports. Share event details via one tap. Add events directly to calendar days.</div>
-        <span class="feat-tag" style="background:rgba(56,189,248,0.1);color:var(--sky);">Planning</span>
-      </div>
-
-      <div class="feat-card reveal reveal-delay-2" style="border-color:rgba(244,63,94,0.2);">
-        <div class="feat-glow" style="background:radial-gradient(circle at 0% 0%, rgba(244,63,94,0.12), transparent 60%);"></div>
-        <div class="feat-num">7</div>
-        <div class="feat-emoji">🔴</div>
-        <div class="feat-title">Needs-Attention Alerts</div>
-        <div class="feat-desc">Auto-detects people with names but zero activity logged this month. Surfaces them in the ward council report so no one is ever forgotten.</div>
-        <span class="feat-tag" style="background:rgba(244,63,94,0.1);color:#fca5a5;">Smart</span>
-      </div>
-
-      <div class="feat-card reveal reveal-delay-3" style="border-color:rgba(99,102,241,0.2);">
-        <div class="feat-glow" style="background:radial-gradient(circle at 0% 0%, rgba(99,102,241,0.12), transparent 60%);"></div>
-        <div class="feat-num">8</div>
-        <div class="feat-emoji">💾</div>
-        <div class="feat-title">Real-Time Firebase Sync</div>
-        <div class="feat-desc">Every change saves instantly to the cloud. Multiple leaders can view simultaneously. Export/import JSON for backups. Dark mode included.</div>
-        <span class="feat-tag" style="background:rgba(99,102,241,0.1);color:#a5b4fc;">Tech</span>
-      </div>
-
-      <div class="feat-card reveal" style="border-color:rgba(240,165,0,0.2);">
-        <div class="feat-glow" style="background:radial-gradient(circle at 0% 0%, rgba(240,165,0,0.12), transparent 60%);"></div>
-        <div class="feat-num">9</div>
-        <div class="feat-emoji">📱</div>
-        <div class="feat-title">Mobile-First Design</div>
-        <div class="feat-desc">Works perfectly on phones and tablets. Share event details using your phone's native share sheet. No app to download — just a link.</div>
-        <span class="feat-tag" style="background:rgba(240,165,0,0.1);color:var(--gold);">Access</span>
-      </div>
-
+    <div class="tw s2">
+      <div class="th"><div><h2>⛪ RIVERTON 24TH WARD — FOCUS FIVE TRACKER</h2><p>Real-time synced · Firebase Realtime Database</p></div><div class="ttabs"><div class="ttab on">👤 Investigators (5)</div><div class="ttab off">💙 Returning (5)</div></div></div>
+      <div class="tqnav"><span>Quarter:</span><div class="tqb">Q1</div><div class="tqb">Q2</div><div class="tqb sel">Q3 ← Now</div><div class="tqb">Q4</div><span style="margin-left:auto;font-size:.64rem;color:rgba(255,255,255,.6);">📊 Q3: 17 activities &nbsp;|&nbsp; 4/5 active &nbsp;|&nbsp; Top: ⛪ IAC</span></div>
+      <div class="ttable"><table style="width:100%;border-collapse:collapse;"><thead class="tthead"><tr><th style="min-width:155px;text-align:left;">Name &amp; Goal</th><th style="min-width:85px;">Assigned</th><th>JUL</th><th>AUG</th><th>SEP</th><th style="min-width:90px;">Notes</th><th>Stats</th></tr></thead><tbody id="inv-tbody"></tbody></table></div>
     </div>
+    <div class="s3" style="font-size:clamp(.62rem,1vw,.72rem);color:rgba(255,255,255,.28);text-align:center;">Click any month cell to log indicators · 🔥 = Focus Person · 🔴 = no activity logged yet</div>
   </div>
-</section>
+</div>
 
-<!-- ═══ SLIDE 4: THE 5 FOCUS AREAS ═══ -->
-<section id="focus5">
-  <div class="container" style="display:flex;flex-direction:column;align-items:center;">
-    <div class="section-header reveal">
-      <div class="section-tag">The Framework</div>
-      <h2 class="section-title">21 ACTIVITY<br>INDICATORS</h2>
-      <p class="section-desc">Every touchpoint logged. From the first invitation all the way to confirmation — and everything in between.</p>
+<!-- ════ SLIDE 5 — TRACKER: RETURNING ════ -->
+<div class="slide" id="s5">
+  <div class="si" style="justify-content:flex-start;padding-top:16px;gap:6px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:980px;" class="s1">
+      <div><div class="tag" style="margin-bottom:2px;">Inside the Tracker</div><div class="big" style="font-size:clamp(1.7rem,3.8vw,2.8rem);">💙 RETURNING MEMBERS</div></div>
+      <div style="font-size:clamp(.68rem,1.1vw,.8rem);color:rgba(255,255,255,.4);max-width:280px;text-align:right;line-height:1.5;">Each active ward member has an <span class="grn">assignment</span> — they are the 99 bringing someone home.</div>
     </div>
-
-    <div class="f5-track reveal">
-      <div class="f5-pill" style="--grad: linear-gradient(135deg, #3b82f6, #06b6d4);">
-        <span class="f5-em">⛪</span>
-        <div>
-          <div class="f5-name">Invitations to Church</div>
-          <div class="f5-code">IAC · AC</div>
-        </div>
-      </div>
-      <div class="f5-pill" style="--grad: linear-gradient(135deg, #10b981, #059669);">
-        <span class="f5-em">📖</span>
-        <div>
-          <div class="f5-name">Book of Mormon</div>
-          <div class="f5-code">IRB · RBOM</div>
-        </div>
-      </div>
-      <div class="f5-pill" style="--grad: linear-gradient(135deg, #8b5cf6, #6d28d9);">
-        <span class="f5-em">🎉</span>
-        <div>
-          <div class="f5-name">Activities & FHE</div>
-          <div class="f5-code">IACA · IFHE · ACA</div>
-        </div>
-      </div>
-      <div class="f5-pill" style="--grad: linear-gradient(135deg, #f97316, #dc2626);">
-        <span class="f5-em">👔</span>
-        <div>
-          <div class="f5-name">Missionary Lessons</div>
-          <div class="f5-code">ITM · TML</div>
-        </div>
-      </div>
-      <div class="f5-pill" style="--grad: linear-gradient(135deg, #f43f5e, #be123c);">
-        <span class="f5-em">💧</span>
-        <div>
-          <div class="f5-name">Baptism & Confirmation</div>
-          <div class="f5-code">ITB · BD · B · C</div>
-        </div>
-      </div>
-      <div class="f5-pill" style="--grad: linear-gradient(135deg, #6366f1, #4f46e5);">
-        <span class="f5-em">🌳</span>
-        <div>
-          <div class="f5-name">Family History</div>
-          <div class="f5-code">IFH · FHS</div>
-        </div>
-      </div>
-      <div class="f5-pill" style="--grad: linear-gradient(135deg, #14b8a6, #0891b2);">
-        <span class="f5-em">🤝</span>
-        <div>
-          <div class="f5-name">Service & Ministering</div>
-          <div class="f5-code">ISP · ASP · MV</div>
-        </div>
-      </div>
-      <div class="f5-pill" style="--grad: linear-gradient(135deg, #6b7280, #374151);">
-        <span class="f5-em">📱</span>
-        <div>
-          <div class="f5-name">Personal Contact</div>
-          <div class="f5-code">TXT · ACTIVE</div>
-        </div>
-      </div>
+    <div class="tw s2">
+      <div class="th grnh"><div><h2>💙 RETURNING MEMBERS — FOCUS FIVE TRACKER</h2><p>Real-time synced · Firebase Realtime Database</p></div><div class="ttabs"><div class="ttab off">👤 Investigators (5)</div><div class="ttab gon">💙 Returning (5)</div></div></div>
+      <div class="tqnav grnh"><span>Quarter:</span><div class="tqb">Q1</div><div class="tqb">Q2</div><div class="tqb sel" style="color:#047857;">Q3 ← Now</div><div class="tqb">Q4</div><span style="margin-left:auto;font-size:.64rem;color:rgba(255,255,255,.6);">📊 Q3: 14 activities &nbsp;|&nbsp; 3/5 active &nbsp;|&nbsp; Top: 🙏 AC</span></div>
+      <div class="ttable"><table style="width:100%;border-collapse:collapse;"><thead class="tthead grnh"><tr><th style="min-width:155px;text-align:left;">Name &amp; Goal</th><th style="min-width:85px;">Assigned</th><th>JUL</th><th>AUG</th><th>SEP</th><th style="min-width:90px;">Notes</th><th>Stats</th></tr></thead><tbody id="ret-tbody"></tbody></table></div>
     </div>
-
-    <div class="indicators-section reveal reveal-delay-1">
-      <div class="ind-label">All 21 indicator codes</div>
-      <div class="ind-chips">
-        <div class="ind-chip">⛪ IAC</div><div class="ind-chip">📖 IRB</div><div class="ind-chip">🎉 IACA</div>
-        <div class="ind-chip">🏠 IFHE</div><div class="ind-chip">👔 ITM</div><div class="ind-chip">💧 ITB</div>
-        <div class="ind-chip">🌳 IFH</div><div class="ind-chip">🤝 ISP</div><div class="ind-chip">🚪 MV</div>
-        <div class="ind-chip">📱 TXT</div><div class="ind-chip">🙏 AC</div><div class="ind-chip">📚 RBOM</div>
-        <div class="ind-chip">🎊 ACA</div><div class="ind-chip">👨‍👩‍👧 AFHE</div><div class="ind-chip">📝 TML</div>
-        <div class="ind-chip">📅 BD</div><div class="ind-chip">✨ B</div><div class="ind-chip">🕊️ C</div>
-        <div class="ind-chip">🌲 FHS</div><div class="ind-chip">💪 ASP</div><div class="ind-chip">⭐ ACTIVE</div>
-      </div>
-    </div>
+    <div class="s3" style="font-size:clamp(.62rem,1vw,.72rem);color:rgba(255,255,255,.28);text-align:center;">Same logic as investigators — most indicators = closest to returning. When they do, focus shifts to the next person.</div>
   </div>
-</section>
+</div>
 
-<!-- ═══ SLIDE 5: COVENANT PATH ═══ -->
-<section id="covenant">
-  <div class="container" style="display:flex;flex-direction:column;align-items:center;">
-    <div class="section-header reveal">
-      <div class="section-tag">Post-Baptism Tracking</div>
-      <h2 class="section-title">THE COVENANT<br>PATH</h2>
-      <p class="section-desc">Baptism isn't the finish line — it's the beginning. Focus Five tracks every ordinance and self-reliance milestone after baptism.</p>
-    </div>
-
-    <div class="path-flow reveal">
-      <div class="path-step">
-        <div class="path-circle" style="background:rgba(244,63,94,0.15);border-color:rgba(244,63,94,0.3);">💧</div>
-        <div class="path-step-name">Baptism &amp; Confirmation</div>
-      </div>
-      <div class="path-arrow">→</div>
-      <div class="path-step">
-        <div class="path-circle" style="background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.3);">🏛️</div>
-        <div class="path-step-name">Temple Baptisms</div>
-      </div>
-      <div class="path-arrow">→</div>
-      <div class="path-step">
-        <div class="path-circle" style="background:rgba(56,189,248,0.15);border-color:rgba(56,189,248,0.3);">📜</div>
-        <div class="path-step-name">Patriarchal Blessing</div>
-      </div>
-      <div class="path-arrow">→</div>
-      <div class="path-step">
-        <div class="path-circle" style="background:rgba(240,165,0,0.15);border-color:rgba(240,165,0,0.3);">⚜️</div>
-        <div class="path-step-name">Aaronic / Melchizedek Priesthood</div>
-      </div>
-      <div class="path-arrow">→</div>
-      <div class="path-step">
-        <div class="path-circle" style="background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3);">🏆</div>
-        <div class="path-step-name">Temple Endowment</div>
-      </div>
-    </div>
-
-    <div class="ord-section reveal reveal-delay-1">
-      <div class="ord-box">
-        <h4>👨 Male Ordinances</h4>
-        <div class="ord-item"><div class="ord-check done">✓</div> Aaronic Priesthood</div>
-        <div class="ord-item"><div class="ord-check done">✓</div> Temple Baptisms</div>
-        <div class="ord-item"><div class="ord-check">　</div> Patriarchal Blessing</div>
-        <div class="ord-item"><div class="ord-check">　</div> Melchizedek Priesthood</div>
-        <div class="ord-item"><div class="ord-check">　</div> Temple Endowment</div>
-      </div>
-      <div class="ord-box">
-        <h4>👩 Female Ordinances</h4>
-        <div class="ord-item"><div class="ord-check done">✓</div> Temple Baptisms</div>
-        <div class="ord-item"><div class="ord-check done">✓</div> Patriarchal Blessing</div>
-        <div class="ord-item"><div class="ord-check">　</div> Temple Endowment</div>
-      </div>
-      <div class="ord-box">
-        <h4>💼 Self-Reliance Classes</h4>
-        <div class="ord-item"><div class="ord-check done">✓</div> Emotional Resilience</div>
-        <div class="ord-item"><div class="ord-check done">✓</div> Personal Finances</div>
-        <div class="ord-item"><div class="ord-check">　</div> Start/Grow Business</div>
-        <div class="ord-item"><div class="ord-check">　</div> Education for Better Work</div>
-        <div class="ord-item"><div class="ord-check">　</div> Find Better Job</div>
-      </div>
-      <div class="ord-box">
-        <h4>🎓 OAY (On Account of Youth)</h4>
-        <div class="ord-item"><div class="ord-check">　</div> Temple Baptisms</div>
-        <div class="ord-item" style="font-size:0.75rem;color:rgba(255,255,255,0.35);padding-top:8px;">Separate path for youth converts with temple baptism as primary milestone</div>
-      </div>
-    </div>
+<!-- ════ SLIDE 6 — FOCUS SHIFTS ════ -->
+<div class="slide" id="s6">
+  <div class="si" style="gap:6px;">
+    <div class="tag s1">The Process in Action</div>
+    <div class="big s2" style="font-size:clamp(2rem,5vw,4rem);">WHEN THE <span class="gold">ONE</span> RETURNS…<br><span style="font-size:.55em;color:rgba(255,255,255,.35);">THE FOCUS SHIFTS TO THE</span> <span class="gold" style="font-size:.55em;">NEXT ONE.</span></div>
+    <div class="ff-wrap s3" id="funnel-el"></div>
+    <div class="pstrip s4" id="pstrip-el"></div>
+    <div class="s5" style="font-size:clamp(.68rem,1.1vw,.8rem);color:rgba(255,255,255,.35);text-align:center;max-width:660px;line-height:1.7;">The tracker shows you who has the most indicators — that's your <span class="gold">focus person</span>. When they progress, the data points you to the next. This is how a ward of 99 moves as <em>one</em>.</div>
   </div>
-</section>
+</div>
 
-<!-- ═══ SLIDE 6: WARD COUNCIL REPORT ═══ -->
-<section id="report">
-  <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:48px;">
-    <div class="section-header reveal" style="margin-bottom:0;">
-      <div class="section-tag">Leadership Tool</div>
-      <h2 class="section-title">ONE-CLICK<br>WARD REPORT</h2>
-      <p class="section-desc">Every Sunday council meeting starts with this. Real numbers, real names, real accountability — in seconds.</p>
-    </div>
-
-    <div class="report-mockup reveal reveal-delay-1">
-      <div class="report-header">
-        <div>
-          <h2>📋 Ward Council Report</h2>
-          <p>Riverton 24th Tongan Ward · May 2025</p>
-        </div>
-        <button class="report-print-btn">🖨️ Print</button>
-      </div>
-      <div class="report-body">
-        <div class="report-stats">
-          <div class="rstat"><div class="n" style="color:#f59e0b;">8</div><div class="l">Investigators</div></div>
-          <div class="rstat"><div class="n" style="color:#10b981;">6</div><div class="l">Returning Members</div></div>
-          <div class="rstat"><div class="n" style="color:#8b5cf6;">4</div><div class="l">Covenant Path</div></div>
-          <div class="rstat"><div class="n" style="color:#38bdf8;">23</div><div class="l">Activities This Month</div></div>
-        </div>
-        <div class="report-section-label">⛪ Investigators — May Activity</div>
-        <div class="report-row">
-          <span style="font-weight:600;font-size:0.83rem;">👤 Sione Taufa</span>
-          <div class="tags"><span class="rtag">IAC</span><span class="rtag">TXT</span><span class="rtag">IACA</span></div>
-        </div>
-        <div class="report-row">
-          <span style="font-weight:600;font-size:0.83rem;">👤 Maria Faleolo</span>
-          <div class="tags"><span class="rtag">AC</span><span class="rtag">TML</span><span class="rtag" style="background:rgba(244,63,94,0.15);color:#fca5a5;">BD</span></div>
-        </div>
-        <div class="report-section-label">🔴 Needs Attention (No activity logged)</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
-          <span style="background:rgba(244,63,94,0.1);color:#fca5a5;padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;">Peni Havili</span>
-          <span style="background:rgba(244,63,94,0.1);color:#fca5a5;padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;">Ana Taufa</span>
-        </div>
-        <div class="report-section-label">🙏 Prayer List</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
-          <span style="background:rgba(99,102,241,0.1);color:#a5b4fc;padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;">Latu Family</span>
-          <span style="background:rgba(99,102,241,0.1);color:#a5b4fc;padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;">Brother Fifita</span>
-        </div>
-      </div>
-    </div>
+<!-- ════ SLIDE 7 — 21 INDICATORS ════ -->
+<div class="slide" id="s7">
+  <div class="si" style="justify-content:flex-start;padding-top:16px;gap:6px;">
+    <div class="tag s1" style="text-align:center;">The Measurement System</div>
+    <div class="big s2" style="font-size:clamp(1.7rem,3.8vw,3rem);text-align:center;">21 WAYS TO <span class="gold">MEASURE</span> PROGRESS</div>
+    <div class="ig s3" id="ind-grid"></div>
+    <div class="s4" style="font-size:clamp(.6rem,1vw,.7rem);color:rgba(255,255,255,.28);margin-top:8px;text-align:center;">More indicators logged = closer to the next milestone = clearer who the Focus Person is. Every interaction matters.</div>
   </div>
-</section>
+</div>
 
-<!-- ═══ SLIDE 7: EVENTS CALENDAR ═══ -->
-<section id="events">
-  <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:48px;">
-    <div class="section-header reveal" style="margin-bottom:0;">
-      <div class="section-tag">Ward Planning</div>
-      <h2 class="section-title">INVITE-READY<br>EVENT CALENDAR</h2>
-      <p class="section-desc">Log ward events and flag them as "great for inviting investigators." They surface automatically in your ward council report.</p>
-    </div>
-
-    <div class="cal-mockup reveal reveal-delay-1">
-      <div class="cal-top">
-        <div>
-          <h3>📅 MAY 2025</h3>
-          <p>Ward Event Calendar</p>
-        </div>
-        <div class="cal-nav-btns">
-          <button class="cal-nav-btn">‹</button>
-          <button class="cal-nav-btn">›</button>
-        </div>
-      </div>
-      <div class="cal-grid">
-        <div class="cal-days">
-          <div class="cal-day-name">S</div><div class="cal-day-name">M</div><div class="cal-day-name">T</div>
-          <div class="cal-day-name">W</div><div class="cal-day-name">T</div><div class="cal-day-name">F</div><div class="cal-day-name">S</div>
-        </div>
-        <div class="cal-days" id="cal-cells"></div>
-      </div>
-      <div class="event-list">
-        <div class="event-item invite">
-          <span class="event-emoji">🎉</span>
-          <div class="event-info">
-            <div class="name">Ward BBQ & Games Night</div>
-            <div class="meta">May 17 · 5:00 PM · Church Building</div>
-          </div>
-          <span class="invite-badge">✨ Invite-ready</span>
-        </div>
-        <div class="event-item church">
-          <span class="event-emoji">🙏</span>
-          <div class="event-info">
-            <div class="name">Ward Sacrament Meeting</div>
-            <div class="meta">May 18 · 9:00 AM · Riverton Chapel</div>
-          </div>
-        </div>
-        <div class="event-item invite">
-          <span class="event-emoji">🤝</span>
-          <div class="event-info">
-            <div class="name">Community Service Project</div>
-            <div class="meta">May 24 · 9:00 AM · Riverton Park</div>
-          </div>
-          <span class="invite-badge">✨ Invite-ready</span>
-        </div>
-      </div>
-    </div>
+<!-- ════ SLIDE 8 — COVENANT PATH ════ -->
+<div class="slide" id="s8">
+  <div class="si" style="gap:8px;">
+    <div class="tag s1">After Baptism</div>
+    <div class="big s2" style="font-size:clamp(2rem,4.5vw,3.8rem);">THE COVENANT <span class="lav">PATH</span></div>
+    <div class="s3" style="font-size:clamp(.75rem,1.25vw,.88rem);color:rgba(255,255,255,.45);text-align:center;max-width:620px;line-height:1.6;">Baptism isn't the finish line. <em>Focus on the One</em> continues — we track every ordinance and milestone until the temple endowment. The same "who is closest?" logic applies.</div>
+    <div class="pflow s4" id="path-flow"></div>
+    <div class="og s5" id="ord-grid"></div>
   </div>
-</section>
+</div>
 
-<!-- ═══ SLIDE 8: PRAYER LIST ═══ -->
-<section id="prayer">
-  <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:48px;">
-    <div class="section-header reveal" style="margin-bottom:0;">
-      <div class="section-tag">Spiritual Feature</div>
-      <h2 class="section-title">THE PRAYER<br>ROLL</h2>
-      <p class="section-desc">A living list of names the ward has covenanted to pray for. Syncs to every ward council report. Never forgotten — only answered.</p>
+<!-- ════ SLIDE 9 — WARD COUNCIL REPORT ════ -->
+<div class="slide" id="s9">
+  <div class="si" style="justify-content:flex-start;padding-top:16px;gap:8px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:840px;" class="s1">
+      <div><div class="tag" style="margin-bottom:2px;">Leadership Tool</div><div class="big" style="font-size:clamp(1.7rem,3.8vw,2.8rem);">ONE-CLICK <span class="gold">REPORT</span></div></div>
+      <div style="font-size:clamp(.68rem,1.1vw,.8rem);color:rgba(255,255,255,.4);max-width:270px;text-align:right;line-height:1.5;">Every Sunday council starts here. Real data. <span class="gold">Who is the Focus Person this week?</span></div>
     </div>
-
-    <div class="prayer-mockup reveal reveal-delay-1">
-      <div class="prayer-header-block">
-        <div class="icon">🙏</div>
-        <div>
-          <h2>Ward Prayer List</h2>
-          <p>Riverton 24th Tongan Ward</p>
-        </div>
-      </div>
-      <div class="prayer-body">
-        <div class="prayer-input-row">
-          <input class="prayer-input" placeholder="Add a name to pray for..." type="text" />
-          <button class="prayer-add-btn">+ Add</button>
-        </div>
-        <div class="prayer-person">
-          <span>🙏</span>
-          <div>
-            <div style="font-weight:600;font-size:0.85rem;">Latu Family</div>
-            <div style="font-size:0.72rem;color:var(--slate);">Praying for conversion of the father</div>
-          </div>
-          <span class="days">12 days</span>
-        </div>
-        <div class="prayer-person" style="animation-delay:0.1s;">
-          <span>🙏</span>
-          <div>
-            <div style="font-weight:600;font-size:0.85rem;">Brother Fifita</div>
-            <div style="font-size:0.72rem;color:var(--slate);">Returning activity, needs support</div>
-          </div>
-          <span class="days">5 days</span>
-        </div>
-        <div class="prayer-person" style="animation-delay:0.2s;">
-          <span>🙏</span>
-          <div>
-            <div style="font-weight:600;font-size:0.85rem;">Sina Taufa</div>
-            <div style="font-size:0.72rem;color:var(--slate);">Investigator, wavering on baptism</div>
-          </div>
-          <span class="days">3 days</span>
-        </div>
-        <div style="margin-top:14px;padding:10px 14px;background:rgba(16,185,129,0.06);border-radius:10px;border:1px solid rgba(16,185,129,0.15);font-size:0.78rem;color:rgba(255,255,255,0.5);text-align:center;">
-          3 people on the prayer roll · Updated in Ward Council Report automatically
+    <div class="rw s2">
+      <div class="rh"><div><h2>📋 Ward Council Report</h2><p>Riverton 24th Tongan Ward · May 2025</p></div><button class="rp">🖨️ Print</button></div>
+      <div class="rstats"><div class="rs"><div class="n" style="color:#f59e0b;">8</div><div class="l">Investigators</div></div><div class="rs"><div class="n" style="color:#10b981;">6</div><div class="l">Returning</div></div><div class="rs"><div class="n" style="color:#8b5cf6;">4</div><div class="l">Covenant Path</div></div><div class="rs"><div class="n" style="color:#38bdf8;">23</div><div class="l">Activities / Month</div></div></div>
+      <div class="rb">
+        <div class="rl">🔥 Focus Person — Closest to Progressing</div>
+        <div class="rrow" style="background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.22);"><span style="font-weight:800;font-size:.78rem;">🔥 Sione Taufa <span style="color:rgba(255,255,255,.32);font-weight:400;font-size:.68rem;">(Investigator)</span></span><div class="rtgs"><span class="rtg">IAC</span><span class="rtg">TML</span><span class="rtg">ACA</span><span class="rtg">TXT</span><span class="rtg" style="background:rgba(244,63,94,.18);color:#fca5a5;">BD</span></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:6px;">
+          <div><div class="rl">⛪ Investigators — May</div><div class="rrow"><span style="font-size:.72rem;font-weight:700;">👤 Maria Faleolo</span><div class="rtgs"><span class="rtg">AC</span><span class="rtg">TML</span></div></div><div class="rrow"><span style="font-size:.72rem;font-weight:700;">👤 Peni Latu</span><div class="rtgs"><span class="rtg">TXT</span><span class="rtg">IACA</span></div></div></div>
+          <div><div class="rl">🔴 Needs Attention</div><div style="display:flex;flex-wrap:wrap;gap:5px;"><span class="rpill red">Ana Taufa</span><span class="rpill red">Havili Family</span></div><div class="rl" style="margin-top:10px;">💙 Returning Active</div><div style="display:flex;flex-wrap:wrap;gap:5px;"><span class="rpill" style="background:rgba(16,185,129,.1);color:#34d399;">Tupa Faleolo ✅</span></div></div>
+          <div><div class="rl">🙏 Prayer Roll</div><div style="display:flex;flex-wrap:wrap;gap:5px;"><span class="rpill pray">Latu Family</span><span class="rpill pray">Br. Fifita</span><span class="rpill pray">Sina Taufa</span></div></div>
         </div>
       </div>
     </div>
+    <div class="s3" style="font-size:clamp(.6rem,1vw,.7rem);color:rgba(255,255,255,.28);text-align:center;">Generated in one click · Printable · Auto-updates each month as activity is logged</div>
   </div>
-</section>
+</div>
 
-<!-- ═══ SLIDE 9: LIVE DEMO ═══ -->
-<section id="demo">
-  <div class="demo-glow"></div>
-  <div class="section-tag reveal">Ready to Explore?</div>
-  <h2 class="section-title reveal reveal-delay-1" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,7rem);letter-spacing:3px;text-align:center;line-height:0.95;">
-    SEE IT<br><span style="color:var(--gold);">LIVE</span>
-  </h2>
-  <p class="section-desc reveal reveal-delay-2" style="text-align:center;">
-    The tracker is live right now. Open it on any device, no login required. Every feature is available — real data, real sync.
-  </p>
-  <a href="https://filipefa1998-sudo.github.io/focus5-tracker/" target="_blank" class="btn-primary reveal reveal-delay-3" style="font-size:1.1rem;padding:18px 42px;">
-    🚀 Open Focus Five Tracker
-  </a>
-  <div class="demo-url reveal reveal-delay-4">filipefa1998-sudo.github.io/focus5-tracker</div>
-  <div style="margin-top:16px;color:var(--slate);font-size:0.8rem;reveal reveal-delay-4;">
-    Built for the Riverton 24th Tongan Ward · Firebase Realtime Database · Mobile-ready · No app required
+<!-- ════ SLIDE 10 — CLOSE ════ -->
+<div class="slide" id="s10">
+  <div class="cglow"></div>
+  <div class="si" style="gap:2px;">
+    <div class="tag s1">Open Right Now · No Install Required</div>
+    <div class="big s2" style="font-size:clamp(3.5rem,9.5vw,8rem);">SEE IT<br><span class="gold">LIVE.</span></div>
+    <div class="s3" style="font-size:clamp(.82rem,1.4vw,1rem);color:rgba(255,255,255,.45);text-align:center;max-width:560px;line-height:1.7;">Live right now, syncing real-time to Firebase. Open on any phone or laptop — no install, no login. This is our ward's tool.</div>
+    <div class="csr s4"><div class="cs"><div class="n">21</div><div class="l">Indicators</div></div><div class="cs"><div class="n">2</div><div class="l">People Lists</div></div><div class="cs"><div class="n">1</div><div class="l">Click Report</div></div><div class="cs"><div class="n">∞</div><div class="l">Scalable</div></div></div>
+    <div class="ubox s5">filipefa1998-sudo.github.io/focus5-tracker</div>
+    <a href="https://filipefa1998-sudo.github.io/focus5-tracker/" target="_blank" class="ob2 s6">🚀 Open the Tracker</a>
   </div>
-</section>
+</div>
 
 <script>
-  // ─── STARFIELD ───
-  const sf = document.getElementById('starfield');
-  for (let i = 0; i < 120; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    const size = Math.random() * 2.5 + 0.5;
-    s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${(Math.random()*3+2).toFixed(1)}s;animation-delay:${(Math.random()*4).toFixed(1)}s;`;
-    sf.appendChild(s);
-  }
+const INDS=[
+  {code:'IAC',name:'Invite to Church',emoji:'⛪',cat:'inv'},
+  {code:'IRB',name:'Invite to Read BOM',emoji:'📖',cat:'inv'},
+  {code:'IACA',name:'Invite to Activity',emoji:'🎉',cat:'inv'},
+  {code:'IFHE',name:'Invite to FHE',emoji:'🏠',cat:'inv'},
+  {code:'ITM',name:'Missionary Lesson',emoji:'👔',cat:'inv'},
+  {code:'ITB',name:'Invite to Baptize',emoji:'💧',cat:'inv'},
+  {code:'IFH',name:'Family History',emoji:'🌳',cat:'inv'},
+  {code:'ISP',name:'Service Project',emoji:'🤝',cat:'inv'},
+  {code:'MV',name:'Ministering Visit',emoji:'🚪',cat:'ret'},
+  {code:'TXT',name:'Texted/Called',emoji:'📱',cat:'ret'},
+  {code:'AC',name:'Attended Church',emoji:'🙏',cat:'ret'},
+  {code:'RBOM',name:'Reading BOM',emoji:'📚',cat:'ret'},
+  {code:'ACA',name:'Attended Activity',emoji:'🎊',cat:'ret'},
+  {code:'AFHE',name:'Attended FHE',emoji:'👨‍👩‍👧',cat:'ret'},
+  {code:'TML',name:'Taking Lessons',emoji:'📝',cat:'ret'},
+  {code:'BD',name:'Baptism Date Set',emoji:'📅',cat:'bap'},
+  {code:'B',name:'Baptized',emoji:'✨',cat:'bap'},
+  {code:'C',name:'Confirmed',emoji:'🕊️',cat:'bap'},
+  {code:'FHS',name:'Family History',emoji:'🌲',cat:'bap'},
+  {code:'ASP',name:'Attended Service',emoji:'💪',cat:'bap'},
+  {code:'ACTIVE',name:'Active Member',emoji:'⭐',cat:'cov'},
+];
 
-  // ─── CALENDAR ───
-  const cells = document.getElementById('cal-cells');
-  if (cells) {
-    const events = { 5:true, 11:true, 17:true, 24:true };
-    const inviteReady = { 17:true, 24:true };
-    const today = 15;
-    let offset = 3; // May 2025 starts on Thursday (index 4... let's use Wed=3 for demo)
-    for (let i = 0; i < offset; i++) {
-      const d = document.createElement('div');
-      cells.appendChild(d);
-    }
-    for (let d = 1; d <= 31; d++) {
-      const cell = document.createElement('div');
-      cell.className = 'cal-cell';
-      if (d === today) cell.classList.add('today');
-      if (events[d]) cell.classList.add('has-event');
-      if (inviteReady[d]) cell.classList.add('invite-ready');
-      cell.textContent = d;
-      cells.appendChild(cell);
-    }
-  }
+function ge(c,emo){const i=INDS.find(x=>x.code===c);return i?i.emoji:emo||c;}
 
-  // ─── SCROLL REVEAL ───
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+/* SHEEP ROW */
+function buildSheep(){
+  const r=document.getElementById('sheep-row'); if(!r)return;
+  for(let i=0;i<20;i++){const s=document.createElement('span');s.className='sheep'+(i===10?' the-one':' gone');s.textContent='🐑';r.appendChild(s);}
+  setTimeout(()=>{r.querySelectorAll('.sheep.gone').forEach((s,i)=>{setTimeout(()=>s.classList.remove('gone'),i*55);});},700);
+}
 
-  // ─── PROGRESS BAR & SLIDE COUNTER ───
-  const sections = Array.from(document.querySelectorAll('section'));
-  const totalSlides = document.getElementById('total-slides');
-  const currentSlide = document.getElementById('current-slide');
-  const progressBar = document.getElementById('progress-bar');
-  totalSlides.textContent = sections.length;
+/* INV TABLE */
+const invData=[
+  {em:'🔥',nm:'Sione Taufa',gl:'Goal: Baptism',as:'Elders Quorum',jul:['IAC','TML','TXT'],aug:['ACA','TML','IAC'],sep:['TML','BD','TXT','AC'],note:'Baptism date set!',total:10,focus:true},
+  {em:'👤',nm:'Maria Faleolo',gl:'Goal: Attend Church',as:'Relief Society',jul:['IAC'],aug:['TXT'],sep:['AC','TML'],note:'Consistent now',total:4,focus:false},
+  {em:'👧',nm:'Lani Havili',gl:'Goal: Read BOM',as:'Young Women',jul:[],aug:['IRB'],sep:['TXT'],note:'Slow progress',total:2,focus:false},
+  {em:'👤',nm:'Peni Latu',gl:'',as:'',jul:[],aug:[],sep:[],note:'',total:0,focus:false,na:true},
+  {em:'👴',nm:'Siosaia Tonga',gl:'Goal: FHE',as:'Elders Quorum',jul:['TXT'],aug:['IFHE','ACA'],sep:['TXT'],note:'Making progress',total:4,focus:false},
+];
+function renderInv(){
+  const tb=document.getElementById('inv-tbody'); if(!tb)return;
+  const ms=['jul','aug','sep'],ML=['JUL','AUG','SEP'];
+  tb.innerHTML=invData.map((p,i)=>{
+    const bg=i%2===0?'#fff':'#fffbeb';
+    const fb=p.focus?'box-shadow:inset 3px 0 0 #f0a500;':'';
+    return`<tr class="ttr" style="background:${bg};${fb}">
+      <td class="ttd"><div class="tnm"><span class="em">${p.em}</span><div><div class="nm">${p.nm}${p.focus?' 🔥':''}${p.na?' <span style="color:#ef4444;font-size:.6rem;">🔴</span>':''}</div><div class="gl">${p.gl}</div></div></div></td>
+      <td class="ttd" style="font-size:.62rem;color:#6b7280;">${p.as||'—'}</td>
+      ${ms.map(m=>{const inds=p[m]||[];return`<td class="ttd" style="text-align:center;"><div class="ic">${inds.length?inds.map(c=>`<span class="ie" title="${c}">${ge(c)}</span>`).join(''):'<span class="ab">+</span>'}</div></td>`;}).join('')}
+      <td class="ttd" style="font-size:.6rem;color:#9ca3af;max-width:100px;">${p.note}</td>
+      <td class="ttd" style="text-align:center;">${p.total>0?`<div class="sp">${p.total}<div style="font-size:.5rem;">total</div></div>`:'<span style="font-size:.6rem;color:#d1d5db;">—</span>'}</td>
+    </tr>`;
+  }).join('');
+}
 
-  function updateProgress() {
-    const scrollTop = window.scrollY;
-    const docH = document.documentElement.scrollHeight - window.innerHeight;
-    const pct = Math.min(100, (scrollTop / docH) * 100);
-    progressBar.style.width = pct + '%';
+/* RET TABLE */
+const retData=[
+  {em:'🔥',nm:'Tupa Faleolo',gl:'Goal: Return to Church',as:'Elders Quorum',jul:['TXT','MV'],aug:['AC','MV','AFHE'],sep:['AC','TXT','ACA'],note:'Came back! ✅',total:8,focus:true},
+  {em:'💙',nm:'Latu Family',gl:'Goal: Attend Sacrament',as:'Relief Society',jul:['TXT'],aug:['MV','TXT'],sep:['TXT'],note:'Dad hesitant',total:4,focus:false},
+  {em:'👦',nm:'Malo Tonga',gl:'',as:'Young Men',jul:[],aug:['TXT'],sep:[],note:'',total:1,focus:false},
+  {em:'💙',nm:'Sina Havili',gl:'Goal: Activities',as:'Young Women',jul:[],aug:[],sep:[],note:'',total:0,focus:false,na:true},
+  {em:'👴',nm:'Br. Fifita',gl:'Goal: Take lessons',as:'Elders Quorum',jul:['MV'],aug:['TXT','AC'],sep:['TML'],note:'Warming up',total:4,focus:false},
+];
+function renderRet(){
+  const tb=document.getElementById('ret-tbody'); if(!tb)return;
+  const ms=['jul','aug','sep'];
+  tb.innerHTML=retData.map((p,i)=>{
+    const bg=i%2===0?'#fff':'#f0fdf4';
+    const fb=p.focus?'box-shadow:inset 3px 0 0 #10b981;':'';
+    return`<tr class="ttr" style="background:${bg};${fb}">
+      <td class="ttd"><div class="tnm"><span class="em">${p.em}</span><div><div class="nm">${p.nm}${p.focus?' 🔥':''}${p.na?' <span style="color:#ef4444;font-size:.6rem;">🔴</span>':''}</div><div class="gl">${p.gl}</div></div></div></td>
+      <td class="ttd" style="font-size:.62rem;color:#6b7280;">${p.as||'—'}</td>
+      ${ms.map(m=>{const inds=p[m]||[];return`<td class="ttd" style="text-align:center;"><div class="ic">${inds.length?inds.map(c=>`<span class="ie" title="${c}">${ge(c)}</span>`).join(''):'<span class="ab">+</span>'}</div></td>`;}).join('')}
+      <td class="ttd" style="font-size:.6rem;color:#9ca3af;max-width:100px;">${p.note}</td>
+      <td class="ttd" style="text-align:center;">${p.total>0?`<div class="sp g">${p.total}<div style="font-size:.5rem;">total</div></div>`:'<span style="font-size:.6rem;color:#d1d5db;">—</span>'}</td>
+    </tr>`;
+  }).join('');
+}
 
-    let current = 1;
-    sections.forEach((s, i) => {
-      if (scrollTop >= s.offsetTop - window.innerHeight / 2) current = i + 1;
-    });
-    currentSlide.textContent = current;
+/* FUNNEL */
+function buildFunnel(){
+  const el=document.getElementById('funnel-el'); if(!el)return;
+  const rows=[
+    {n:10,lbl:'10 People — We See Everyone'},
+    {n:7,lbl:'7 Remain — Some contacted'},
+    {n:4,lbl:'4 Active — Progress tracked'},
+    {n:2,lbl:'2 Close — Serious engagement'},
+    {n:1,lbl:'1 — THE FOCUS PERSON',focus:true},
+  ];
+  el.innerHTML=rows.map((r,ri)=>{
+    let h=`<div class="ff-row">`;
+    for(let i=0;i<r.n;i++){h+=`<span class="ffs${r.focus&&i===0?' ffo':' ffa'}">🐑</span>`;}
+    h+=`<span class="ff-lbl">${r.lbl}</span>`;
+    if(r.focus)h+=`<span class="ff-sp">← Focus Here</span>`;
+    h+=`</div>`;
+    if(ri<rows.length-1)h+=`<div style="color:rgba(255,255,255,.12);font-size:.7rem;text-align:center;padding:1px 0;">↓ one comes home · focus shifts</div>`;
+    return h;
+  }).join('');
+}
 
-    // Update nav active
-    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-    const active = document.querySelectorAll('.nav-links a')[current - 1];
-    if (active) active.classList.add('active');
-  }
-  window.addEventListener('scroll', updateProgress, { passive: true });
-  updateProgress();
+/* PROG STRIP */
+function buildPstrip(){
+  const el=document.getElementById('pstrip-el'); if(!el)return;
+  const steps=[
+    {em:'🙏',lbl:'First Contact',lit:true},{em:'📖',lbl:'Reading BOM',lit:true},{em:'🎉',lbl:'Activity',lit:true},
+    {em:'👔',lbl:'Lessons',lit:true},{em:'📅',lbl:'Date Set',lit:false},{em:'💧',lbl:'Baptized',lit:false},
+    {em:'🏛️',lbl:'Ordinances',lit:false},{em:'🏆',lbl:'Endowment',lit:false},
+  ];
+  el.innerHTML=steps.map((s,i)=>`<div style="display:flex;align-items:center;gap:0;"><div class="pc"><div class="pb${s.lit?' lit':''}">${s.em}</div><div class="plbl${s.lit?' lit':''}">${s.lbl}</div></div>${i<steps.length-1?'<div class="parr">→</div>':''}</div>`).join('');
+}
+
+/* IND GRID */
+function buildIndGrid(){
+  const el=document.getElementById('ind-grid'); if(!el)return;
+  const catMap={inv:'inv',ret:'ret',bap:'bap',cov:'cov'};
+  el.innerHTML=INDS.map(ind=>`<div class="ic2 ${catMap[ind.cat]}"><div class="ie2">${ind.emoji}</div><div class="cd">${ind.code}</div><div class="nm2">${ind.name}</div></div>`).join('');
+}
+
+/* COVENANT PATH */
+function buildPath(){
+  const pf=document.getElementById('path-flow'); if(!pf)return;
+  const nodes=[
+    {em:'💧',lbl:'Baptism',lit:true},{em:'🕊️',lbl:'Confirmed',lit:true},{em:'🏛️',lbl:'Temple Baptisms',lit:true},
+    {em:'📜',lbl:'Patriarchal Blessing',lit:false},{em:'⚜️',lbl:'Priesthood',lit:false},{em:'🏆',lbl:'Endowment',lit:false},
+  ];
+  pf.innerHTML=nodes.map((n,i)=>`<div class="pnode"><div class="pball${n.lit?' lit':''}">${n.em}</div><div class="pnlbl${n.lit?' lit':''}">${n.lbl}</div></div>${i<nodes.length-1?`<div class="pcon${n.lit?' lit':''}"></div>`:''}`).join('');
+
+  const og=document.getElementById('ord-grid'); if(!og)return;
+  og.innerHTML=`
+    <div class="ob"><h4>👨 Male Ordinances</h4><div class="or"><div class="oc done">✓</div>Aaronic Priesthood</div><div class="or"><div class="oc done">✓</div>Temple Baptisms</div><div class="or"><div class="oc"></div>Patriarchal Blessing</div><div class="or"><div class="oc"></div>Melchizedek Priesthood</div><div class="or"><div class="oc"></div>Temple Endowment</div></div>
+    <div class="ob"><h4>👩 Female Ordinances</h4><div class="or"><div class="oc done">✓</div>Temple Baptisms</div><div class="or"><div class="oc done">✓</div>Patriarchal Blessing</div><div class="or"><div class="oc"></div>Temple Endowment</div></div>
+    <div class="ob"><h4>🎓 OAY Path</h4><div class="or"><div class="oc"></div>Temple Baptisms</div><div class="or" style="font-size:.58rem;color:rgba(255,255,255,.22);padding-top:5px;">Youth converts — temple baptism is primary milestone</div></div>
+    <div class="ob"><h4>💼 Self-Reliance</h4><div class="or"><div class="oc done">✓</div>Emotional Resilience</div><div class="or"><div class="oc done">✓</div>Personal Finances</div><div class="or"><div class="oc"></div>Start/Grow Business</div><div class="or"><div class="oc"></div>Education for Work</div></div>`;
+}
+
+/* SLIDE ENGINE */
+const slides=Array.from(document.querySelectorAll('.slide'));
+const total=slides.length;
+let cur=0;
+document.getElementById('ct').textContent=total;
+
+function buildDots(){
+  const d=document.getElementById('dots');
+  slides.forEach((_,i)=>{const dot=document.createElement('div');dot.className='dot'+(i===0?' active':'');dot.onclick=()=>goTo(i);d.appendChild(dot);});
+}
+function updateDots(){document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===cur));document.getElementById('ci').textContent=cur+1;}
+function goTo(n){
+  if(n===cur||n<0||n>=total)return;
+  const prev=slides[cur],next=slides[n];
+  prev.classList.remove('active','entering');prev.classList.add('leaving');
+  setTimeout(()=>prev.classList.remove('leaving'),430);
+  next.classList.add('active','entering');
+  setTimeout(()=>next.classList.remove('entering'),620);
+  cur=n;updateDots();
+}
+function nextSlide(){goTo(cur+1);}
+function prevSlide(){goTo(cur-1);}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='ArrowDown'){e.preventDefault();nextSlide();}
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();prevSlide();}
+});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=tx-e.changedTouches[0].clientX;if(Math.abs(dx)>50){dx>0?nextSlide():prevSlide();}},{passive:true});
+
+/* INIT */
+buildDots();buildSheep();renderInv();renderRet();buildFunnel();buildPstrip();buildIndGrid();buildPath();
 </script>
 </body>
 </html>
