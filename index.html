@@ -9,328 +9,422 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{width:100%;height:100%;overflow:hidden;background:#0a0c1a;font-family:'Nunito',sans-serif;color:white;}
 
-/* ─── PARTICLES ─── */
+/* ── PARTICLES ── */
 #particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
 .particle{position:absolute;border-radius:50%;animation:pfloat var(--d) var(--delay) ease-in-out infinite alternate;}
-@keyframes pfloat{from{transform:translateY(0) translateX(0);opacity:var(--o);}to{transform:translateY(var(--ty)) translateX(var(--tx));opacity:calc(var(--o)*0.3);}}
+@keyframes pfloat{from{transform:translateY(0) translateX(0);opacity:var(--o);}to{transform:translateY(var(--ty)) translateX(var(--tx));opacity:calc(var(--o)*0.2);}}
 
-/* ─── SLIDE ENGINE ─── */
+/* ── SLIDE ENGINE ── */
 .slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;overflow:hidden;z-index:1;}
 .slide.active{opacity:1;pointer-events:all;}
-.slide.entering{animation:sIn .6s cubic-bezier(.16,1,.3,1) forwards;}
-.slide.leaving {animation:sOut .38s ease-in forwards;}
-@keyframes sIn {from{opacity:0;transform:translateY(28px) scale(.982);}to{opacity:1;transform:none;}}
-@keyframes sOut{from{opacity:1;transform:none;}to{opacity:0;transform:translateY(-18px) scale(.98);}}
+.slide.entering{animation:sIn .55s cubic-bezier(.16,1,.3,1) forwards;}
+.slide.leaving{animation:sOut .35s ease-in forwards;}
+@keyframes sIn{from{opacity:0;transform:translateY(26px) scale(.984);}to{opacity:1;transform:none;}}
+@keyframes sOut{from{opacity:1;transform:none;}to{opacity:0;transform:translateY(-16px) scale(.98);}}
 
-/* ─── NAV ─── */
-#dots{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:9px;z-index:300;}
-.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);transition:all .35s;cursor:pointer;}
+/* ── NAV ── */
+#dots{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:9px;z-index:300;}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);transition:all .3s;cursor:pointer;}
 .dot.active{background:#f0a500;transform:scale(1.5);box-shadow:0 0 8px rgba(240,165,0,.6);}
-#arl,#arr{position:fixed;top:50%;transform:translateY(-50%);z-index:300;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.15rem;transition:all .2s;user-select:none;}
-#arl{left:14px;}#arr{right:14px;}
-#arl:hover,#arr:hover{background:rgba(255,255,255,.14);color:white;border-color:rgba(255,255,255,.25);}
-#counter{position:fixed;top:18px;right:20px;font-family:'DM Mono',monospace;font-size:.72rem;color:rgba(255,255,255,.28);z-index:300;letter-spacing:1px;}
+#arl,#arr{position:fixed;top:50%;transform:translateY(-50%);z-index:300;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;transition:all .2s;user-select:none;}
+#arl{left:12px;}#arr{right:12px;}
+#arl:hover,#arr:hover{background:rgba(255,255,255,.14);color:white;}
+#counter{position:fixed;top:16px;right:18px;font-family:'DM Mono',monospace;font-size:.72rem;color:rgba(255,255,255,.28);z-index:300;letter-spacing:1px;}
 
-/* ─── STAGGER ─── */
-.s1,.s2,.s3,.s4,.s5,.s6{opacity:0;transform:translateY(24px);}
-.slide.active .s1{animation:up .6s .05s cubic-bezier(.16,1,.3,1) forwards;}
-.slide.active .s2{animation:up .6s .16s cubic-bezier(.16,1,.3,1) forwards;}
-.slide.active .s3{animation:up .6s .27s cubic-bezier(.16,1,.3,1) forwards;}
-.slide.active .s4{animation:up .6s .38s cubic-bezier(.16,1,.3,1) forwards;}
-.slide.active .s5{animation:up .6s .49s cubic-bezier(.16,1,.3,1) forwards;}
-.slide.active .s6{animation:up .6s .60s cubic-bezier(.16,1,.3,1) forwards;}
+/* ── STAGGER ANIMS ── */
+.s1,.s2,.s3,.s4,.s5,.s6{opacity:0;transform:translateY(22px);}
+.slide.active .s1{animation:up .55s .05s cubic-bezier(.16,1,.3,1) forwards;}
+.slide.active .s2{animation:up .55s .15s cubic-bezier(.16,1,.3,1) forwards;}
+.slide.active .s3{animation:up .55s .25s cubic-bezier(.16,1,.3,1) forwards;}
+.slide.active .s4{animation:up .55s .35s cubic-bezier(.16,1,.3,1) forwards;}
+.slide.active .s5{animation:up .55s .45s cubic-bezier(.16,1,.3,1) forwards;}
+.slide.active .s6{animation:up .55s .55s cubic-bezier(.16,1,.3,1) forwards;}
 @keyframes up{to{opacity:1;transform:none;}}
 
-/* ─── SHARED LAYOUT ─── */
-.si{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 36px;gap:0;}
-.tag{font-size:.72rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#f0a500;margin-bottom:9px;}
-.big{font-family:'Bebas Neue',sans-serif;line-height:.9;letter-spacing:3px;text-align:center;}
+/* ── SHARED ── */
+.si{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 40px;gap:0;}
+.tag{font-size:.75rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#f0a500;margin-bottom:10px;}
+.big{font-family:'Bebas Neue',sans-serif;line-height:.92;letter-spacing:3px;text-align:center;}
 .gold{color:#f0a500;}.sky{color:#38bdf8;}.grn{color:#34d399;}.lav{color:#c4b5fd;}.rose{color:#fb7185;}
 
-/* ═══ SLIDE 1 HERO ═══ */
-#s1{background:radial-gradient(ellipse 90% 55% at 50% -5%,rgba(240,165,0,.2) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 85% 90%,rgba(56,189,248,.08) 0%,transparent 60%),#0a0c1a;}
-.hero-verse{font-size:clamp(.88rem,1.5vw,1.05rem);font-style:italic;color:rgba(255,255,255,.42);max-width:620px;text-align:center;line-height:1.75;margin-top:14px;border-top:1px solid rgba(255,255,255,.08);padding-top:14px;}
-.hero-verse strong{color:rgba(255,255,255,.75);font-style:normal;}
+/* floating orbs */
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;animation:orbD var(--d) var(--delay) ease-in-out infinite alternate;}
+@keyframes orbD{from{transform:translate(0,0);}to{transform:translate(var(--tx),var(--ty));}}
 
-/* ═══ SLIDE 2 SCRIPTURE ═══ */
+/* ═════════════════════════════════
+   SLIDE 1 — HERO
+═════════════════════════════════ */
+#s1{background:radial-gradient(ellipse 90% 55% at 50% -5%,rgba(240,165,0,.2) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 85% 90%,rgba(56,189,248,.08) 0%,transparent 60%),#0a0c1a;}
+.hero-verse{font-size:clamp(.9rem,1.55vw,1.08rem);font-style:italic;color:rgba(255,255,255,.42);max-width:640px;text-align:center;line-height:1.75;margin-top:16px;border-top:1px solid rgba(255,255,255,.08);padding-top:16px;}
+.hero-verse strong{color:rgba(255,255,255,.78);font-style:normal;}
+
+/* ═════════════════════════════════
+   SLIDE 2 — SCRIPTURE + PHOTO + SHEEP
+═════════════════════════════════ */
 #s2{background:radial-gradient(ellipse 70% 70% at 50% 50%,rgba(99,102,241,.1) 0%,transparent 70%),#07091a;}
 
+/* Two-column layout when photo is loaded */
+.s2-layout{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  gap:32px;padding:40px 60px;
+}
+.s2-left{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex:1;gap:16px;min-width:0;
+}
+.s2-right{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex:0 0 auto;gap:14px;
+  transition:all .4s;
+}
+.s2-right.hidden{display:none;}
+
 /* Scripture card */
-.sc-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:clamp(18px,3vw,32px) clamp(22px,4vw,46px);max-width:740px;width:100%;text-align:center;position:relative;overflow:hidden;}
-.sc-card::before{content:'❝';position:absolute;top:-18px;left:16px;font-size:7rem;color:rgba(240,165,0,.07);font-family:serif;line-height:1;}
-.sc-ref{font-family:'DM Mono',monospace;font-size:.78rem;letter-spacing:2px;color:#f0a500;margin-bottom:14px;text-transform:uppercase;}
-.sc-text{font-size:clamp(1rem,2.1vw,1.3rem);font-weight:600;line-height:1.75;color:rgba(255,255,255,.9);}
+.sc-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:20px;padding:clamp(18px,2.8vw,30px) clamp(20px,3.5vw,40px);width:100%;text-align:center;position:relative;overflow:hidden;}
+.sc-card::before{content:'❝';position:absolute;top:-20px;left:14px;font-size:7rem;color:rgba(240,165,0,.07);font-family:serif;line-height:1;}
+.sc-ref{font-family:'DM Mono',monospace;font-size:.76rem;letter-spacing:2px;color:#f0a500;margin-bottom:12px;text-transform:uppercase;}
+.sc-text{font-size:clamp(.96rem,2vw,1.22rem);font-weight:600;line-height:1.75;color:rgba(255,255,255,.9);}
 .sc-text em{color:#fbbf24;font-style:normal;font-weight:800;}
 
-/* Sheep animation stage */
-.sheep-stage{width:100%;max-width:700px;margin-top:14px;position:relative;height:80px;display:flex;align-items:center;justify-content:center;}
-.sheep-herd{display:flex;align-items:flex-end;justify-content:center;gap:4px;flex-wrap:nowrap;width:100%;}
+/* Photo upload area */
+.photo-drop{
+  width:220px;height:220px;border-radius:20px;
+  border:2px dashed rgba(240,165,0,.35);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;cursor:pointer;transition:all .3s;
+  background:rgba(240,165,0,.04);
+  overflow:hidden;position:relative;
+}
+.photo-drop:hover{border-color:rgba(240,165,0,.7);background:rgba(240,165,0,.08);}
+.photo-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.photo-drop img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:18px;display:none;}
+.photo-drop .ph-icon{font-size:2.5rem;pointer-events:none;}
+.photo-drop .ph-lbl{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.4);pointer-events:none;text-align:center;line-height:1.4;}
+.photo-drop .ph-sub{font-size:.6rem;color:rgba(255,255,255,.22);pointer-events:none;}
+.photo-caption{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.4);text-align:center;max-width:220px;line-height:1.5;}
 
-/* individual sheep */
-.sh{
-  font-size:clamp(1.1rem,2.2vw,1.65rem);
-  display:inline-flex;align-items:center;justify-content:center;
-  transition:all .4s ease;
-  opacity:1;
-  transform-origin:bottom center;
-}
+/* Sheep stage */
+.sheep-stage{width:100%;max-width:680px;position:relative;height:72px;display:flex;align-items:center;justify-content:center;}
+.sheep-herd{display:flex;align-items:flex-end;justify-content:center;gap:4px;flex-wrap:nowrap;width:100%;}
+.sh{font-size:clamp(1rem,2vw,1.55rem);display:inline-flex;align-items:center;justify-content:center;transition:all .4s ease;opacity:1;transform-origin:bottom center;}
 .sh.faded{opacity:.18;filter:grayscale(1);}
-.sh.the-one{
-  font-size:clamp(1.9rem,3.6vw,2.7rem)!important;
-  filter:drop-shadow(0 0 18px rgba(240,165,0,1)) drop-shadow(0 0 36px rgba(240,165,0,.6));
-  animation:oneFloat 1.8s ease-in-out infinite alternate, onePulse 2.2s ease-in-out infinite;
-  position:relative;
-  z-index:10;
-}
+.sh.the-one{font-size:clamp(1.8rem,3.4vw,2.6rem)!important;filter:drop-shadow(0 0 18px rgba(240,165,0,1)) drop-shadow(0 0 36px rgba(240,165,0,.6));animation:oneFloat 1.8s ease-in-out infinite alternate,onePulse 2.2s ease-in-out infinite;position:relative;z-index:10;}
 @keyframes oneFloat{from{transform:translateY(0) rotate(-3deg);}to{transform:translateY(-10px) rotate(3deg);}}
 @keyframes onePulse{0%,100%{filter:drop-shadow(0 0 18px rgba(240,165,0,1)) drop-shadow(0 0 36px rgba(240,165,0,.55));}50%{filter:drop-shadow(0 0 28px rgba(240,165,0,1)) drop-shadow(0 0 55px rgba(240,165,0,.8)) drop-shadow(0 0 8px #fff);}}
-
-/* golden ring around the one */
-.one-ring{
-  position:absolute;
-  width:clamp(44px,7vw,64px);height:clamp(44px,7vw,64px);
-  border-radius:50%;
-  border:2px solid rgba(240,165,0,.6);
-  animation:ringPulse 1.8s ease-in-out infinite;
-  pointer-events:none;
-}
-@keyframes ringPulse{0%,100%{transform:scale(1);opacity:.7;}50%{transform:scale(1.5);opacity:0;}}
-
-/* stray sheep paths */
+.one-ring{position:absolute;width:clamp(44px,7vw,64px);height:clamp(44px,7vw,64px);border-radius:50%;border:2px solid rgba(240,165,0,.6);animation:ringPulse 1.8s ease-in-out infinite;pointer-events:none;opacity:0;}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:.7;}50%{transform:scale(1.55);opacity:0;}}
 .sh.straying{animation:stray var(--sd) var(--sdelay) ease-in-out infinite alternate;}
 @keyframes stray{from{transform:translateY(0) rotate(0deg);}to{transform:translateY(-5px) rotate(var(--sr));}}
-
-.sh.gone{
-  animation:walkAway .9s forwards;
-  pointer-events:none;
-}
-@keyframes walkAway{
-  0%{opacity:1;transform:translateX(0) scale(1);}
-  60%{opacity:.6;transform:translateX(40px) scale(.8);}
-  100%{opacity:0;transform:translateX(80px) scale(.3);}
-}
-
-/* spotlight beam for the one */
-.spotlight{
-  position:absolute;
-  width:80px;height:160px;
-  background:linear-gradient(to bottom,rgba(240,165,0,.25),transparent);
-  border-radius:50% 50% 0 0 / 30% 30% 0 0;
-  top:-60px;
-  animation:spotSway 3s ease-in-out infinite alternate;
-  pointer-events:none;
-}
+.spotlight{position:absolute;width:70px;height:140px;background:linear-gradient(to bottom,rgba(240,165,0,.2),transparent);border-radius:50% 50% 0 0/30% 30% 0 0;top:-60px;animation:spotSway 3s ease-in-out infinite alternate;pointer-events:none;opacity:0;}
 @keyframes spotSway{from{transform:scaleX(.9) rotate(-2deg);}to{transform:scaleX(1.1) rotate(2deg);}}
+.s2-caption{font-size:clamp(.78rem,1.3vw,.9rem);color:rgba(255,255,255,.32);font-style:italic;text-align:center;}
 
-.s2-caption{font-size:clamp(.78rem,1.3vw,.9rem);color:rgba(255,255,255,.32);font-style:italic;text-align:center;margin-top:8px;}
-
-/* ═══ SLIDE 3 PRINCIPLE ═══ */
+/* ═════════════════════════════════
+   SLIDE 3 — PRINCIPLE
+═════════════════════════════════ */
 #s3{background:radial-gradient(ellipse 80% 50% at 0% 100%,rgba(244,63,94,.07) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 100% 0%,rgba(56,189,248,.06) 0%,transparent 55%),#0a0c1a;}
-.p-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:940px;margin-top:16px;}
-.p-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px 22px;position:relative;overflow:hidden;transition:transform .3s,border-color .3s;}
-.p-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.16);}
-.p-card .bar{position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0;}
-.p-card h3{font-size:clamp(.88rem,1.55vw,1.05rem);font-weight:800;margin-bottom:8px;}
-.p-card p{font-size:clamp(.78rem,1.28vw,0.92rem);color:rgba(255,255,255,.52);line-height:1.65;}
-.p-card p strong{color:white;}
+.p-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:960px;margin-top:18px;}
+.p-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:22px 26px;position:relative;overflow:hidden;transition:transform .3s,border-color .3s;}
+.p-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.18);}
+.p-card .bar{position:absolute;top:0;left:0;right:0;height:3px;border-radius:18px 18px 0 0;}
+.p-card h3{font-size:clamp(.92rem,1.6vw,1.1rem);font-weight:800;margin-bottom:8px;}
+.p-card p{font-size:clamp(.8rem,1.3vw,.96rem);color:rgba(255,255,255,.52);line-height:1.65;}
+.p-card p strong{color:rgba(255,255,255,.9);}
 
-/* ═══ SLIDE 4 / 5 TRACKER ═══ */
+/* ═════════════════════════════════
+   SLIDE 4 — INVESTIGATORS (CENTERED BIG)
+═════════════════════════════════ */
 #s4{background:radial-gradient(ellipse 70% 50% at 100% 0%,rgba(245,158,11,.09) 0%,transparent 55%),#07091a;}
+
+/* The "big readable" tracker layout */
+.tracker-slide{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:32px 48px;gap:0;
+}
+.tracker-title-row{
+  display:flex;align-items:baseline;justify-content:center;
+  gap:16px;margin-bottom:20px;width:100%;
+}
+.tracker-title-row .big{font-size:clamp(2.4rem,5.5vw,4.2rem);}
+.tracker-subtitle{font-size:clamp(.82rem,1.35vw,.98rem);color:rgba(255,255,255,.4);font-weight:600;}
+
+/* The fake tracker card — centered, readable */
+.trk-card{
+  width:100%;max-width:1040px;
+  background:white;border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.trk-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 22px;
+}
+.trk-head-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.1rem,2.2vw,1.6rem);letter-spacing:2px;
+  color:white;
+}
+.trk-head-sub{font-size:.72rem;color:rgba(255,255,255,.7);margin-top:2px;}
+.trk-tabs{display:flex;gap:8px;}
+.trk-tab{padding:7px 16px;border-radius:10px;font-size:.78rem;font-weight:800;border:2px solid transparent;}
+.trk-tab.on{background:rgba(255,255,255,.25);color:white;border-color:rgba(255,255,255,.4);}
+.trk-tab.off{background:rgba(255,255,255,.9);color:#78350f;}
+.trk-tab.off-grn{background:rgba(255,255,255,.9);color:#065f46;}
+
+/* Quarter bar */
+.trk-qbar{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 22px;
+  font-size:.76rem;font-weight:800;color:rgba(255,255,255,.8);
+}
+.trk-qbtn{padding:5px 14px;border-radius:8px;font-size:.72rem;font-weight:800;background:rgba(255,255,255,.18);color:white;border:1px solid rgba(255,255,255,.3);}
+.trk-qbtn.sel{background:white;color:#b45309;}
+.trk-qbtn.sel-g{background:white;color:#047857;}
+.trk-meta{margin-left:auto;font-size:.72rem;color:rgba(255,255,255,.65);}
+
+/* Big readable table */
+.trk-table{width:100%;border-collapse:collapse;}
+.trk-th{color:white;font-size:.82rem;font-weight:800;padding:11px 14px;text-align:left;white-space:nowrap;}
+.trk-th.center{text-align:center;}
+.trk-td{padding:10px 14px;font-size:.9rem;color:#111;vertical-align:middle;border-bottom:1px solid #f3f4f6;}
+.trk-tr:last-child .trk-td{border-bottom:none;}
+.trk-tr.even .trk-td{background:#fffbeb;}
+.trk-tr.even-g .trk-td{background:#f0fdf4;}
+.trk-name-cell{display:flex;align-items:center;gap:8px;}
+.trk-em{font-size:1.5rem;}
+.trk-nm{font-weight:900;font-size:.96rem;color:#111;}
+.trk-gl{font-size:.68rem;color:#6b7280;margin-top:1px;}
+.trk-ic{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;min-height:34px;align-items:center;}
+.trk-ie{font-size:1.25rem;}
+.trk-add{font-size:1.1rem;color:#d1d5db;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;border:1.5px dashed #e5e7eb;}
+.trk-stat{background:linear-gradient(135deg,#f59e0b,#d97706);color:white;padding:4px 10px;border-radius:8px;font-size:.76rem;font-weight:900;text-align:center;display:inline-block;}
+.trk-stat.g{background:linear-gradient(135deg,#10b981,#059669);}
+.trk-assign{font-size:.75rem;color:#6b7280;font-weight:600;}
+.focus-bar{box-shadow:inset 4px 0 0 #f0a500;}
+.focus-bar-g{box-shadow:inset 4px 0 0 #10b981;}
+
+/* Shimmer on focus row */
+.shimrow{position:relative;overflow:hidden;}
+.shimrow::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(240,165,0,.15),transparent);animation:shimrow 3s 1.5s ease-in-out infinite;}
+@keyframes shimrow{from{left:-50%;}to{left:130%;}}
+
+/* ═════════════════════════════════
+   SLIDE 5 — RETURNING (same big layout, green)
+═════════════════════════════════ */
 #s5{background:radial-gradient(ellipse 70% 50% at 0% 0%,rgba(16,185,129,.09) 0%,transparent 60%),#07091a;}
-.tw{width:100%;max-width:990px;display:flex;flex-direction:column;gap:0;margin-top:8px;}
-.th{background:linear-gradient(135deg,#92400e,#b45309);border-radius:14px 14px 0 0;padding:11px 18px;display:flex;align-items:center;justify-content:space-between;}
-.th h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(.95rem,1.9vw,1.28rem);letter-spacing:2px;}
-.th p{font-size:.68rem;opacity:.72;margin-top:1px;}
-.ttabs{display:flex;gap:6px;}
-.ttab{padding:6px 14px;border-radius:8px;font-size:.75rem;font-weight:800;border:2px solid transparent;}
-.ttab.on{background:linear-gradient(135deg,#f59e0b,#d97706);color:white;border-color:#92400e;}
-.ttab.off{background:rgba(255,255,255,.9);color:#78350f;}
-.tqnav{background:linear-gradient(90deg,#b45309,#c2712f);padding:7px 16px;display:flex;align-items:center;gap:7px;}
-.tqnav span{font-size:.72rem;font-weight:800;color:rgba(255,255,255,.82);}
-.tqb{padding:4px 11px;border-radius:6px;font-size:.68rem;font-weight:800;background:rgba(255,255,255,.18);color:white;border:1px solid rgba(255,255,255,.28);}
-.tqb.sel{background:white;color:#b45309;}
-.ttable{background:white;border-radius:0 0 14px 14px;overflow:hidden;width:100%;}
-.tthead th{background:linear-gradient(135deg,#f59e0b,#d97706);color:white;font-size:.72rem;font-weight:800;padding:8px 10px;text-align:left;white-space:nowrap;}
-.tthead th:not(:first-child){text-align:center;}
-.ttr{border-bottom:1px solid #fef3c7;}
-.ttr:last-child{border-bottom:none;}
-.ttr:nth-child(even) td{background:#fffbeb;}
-.ttd{padding:7px 10px;font-size:.75rem;color:#1f2937;vertical-align:middle;}
-.tnm{display:flex;align-items:center;gap:6px;}
-.tnm .em{font-size:1.25rem;}
-.tnm .nm{font-weight:800;font-size:.82rem;color:#111;}
-.tnm .gl{font-size:.64rem;color:#6b7280;}
-.ic{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;min-height:30px;align-items:center;}
-.ie{font-size:1.1rem;}
-.ab{font-size:1.05rem;color:#d1d5db;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;border-radius:5px;border:1.5px dashed #e5e7eb;}
-.sp{background:linear-gradient(135deg,#f59e0b,#d97706);color:white;padding:3px 8px;border-radius:7px;font-size:.68rem;font-weight:800;text-align:center;}
-.sp.g{background:linear-gradient(135deg,#10b981,#059669);}
-/* green variants */
-.th.grnh{background:linear-gradient(135deg,#065f46,#047857);}
-.ttab.gon{background:linear-gradient(135deg,#10b981,#059669);color:white;}
-.tqnav.grnh{background:linear-gradient(90deg,#047857,#059669);}
-.tthead.grnh th{background:linear-gradient(135deg,#10b981,#059669);}
-.ttr.grn-row{border-bottom:1px solid #d1fae5;}
-.ttr.grn-row:nth-child(even) td{background:#f0fdf4;}
 
-/* ═══ SLIDE 6 FUNNEL ═══ */
+/* ═════════════════════════════════
+   SLIDE 6 — FOCUS SHIFTS FUNNEL
+═════════════════════════════════ */
 #s6{background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(240,165,0,.1) 0%,transparent 70%),#07091a;}
-.ff-wrap{width:100%;max-width:820px;margin-top:8px;display:flex;flex-direction:column;align-items:center;gap:1px;}
-.ff-row{display:flex;align-items:center;justify-content:center;gap:4px;padding:5px 0;width:100%;position:relative;border-bottom:1px dashed rgba(255,255,255,.06);}
+.ff-wrap{width:100%;max-width:820px;margin-top:8px;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.ff-row{display:flex;align-items:center;justify-content:center;gap:4px;padding:6px 0;width:100%;position:relative;border-bottom:1px dashed rgba(255,255,255,.06);}
 .ff-row:last-child{border:none;}
-.ffs{font-size:clamp(.88rem,1.7vw,1.35rem);opacity:.22;}
-.ffa{opacity:.7;}
-.ffo{font-size:clamp(1.7rem,3.2vw,2.5rem)!important;opacity:1!important;filter:drop-shadow(0 0 16px rgba(240,165,0,1));animation:fl 2s ease-in-out infinite alternate;}
+.ffs{font-size:clamp(.92rem,1.8vw,1.45rem);opacity:.22;}
+.ffa{opacity:.72;}
+.ffo{font-size:clamp(1.8rem,3.4vw,2.6rem)!important;opacity:1!important;filter:drop-shadow(0 0 16px rgba(240,165,0,1));animation:fl 2s ease-in-out infinite alternate;}
 @keyframes fl{from{transform:translateY(0);}to{transform:translateY(-6px);}}
-.ff-lbl{position:absolute;right:0;font-size:clamp(.6rem,1vw,.74rem);font-weight:800;color:rgba(255,255,255,.3);}
-.ff-sp{font-size:clamp(.6rem,1vw,.74rem);font-weight:800;color:#f0a500;letter-spacing:1px;text-transform:uppercase;margin-left:8px;}
-.pstrip{display:flex;gap:7px;align-items:center;margin-top:16px;flex-wrap:wrap;justify-content:center;}
+.ff-lbl{position:absolute;right:0;font-size:clamp(.64rem,1.05vw,.78rem);font-weight:800;color:rgba(255,255,255,.3);}
+.ff-sp{font-size:clamp(.64rem,1.05vw,.78rem);font-weight:800;color:#f0a500;letter-spacing:1px;text-transform:uppercase;margin-left:8px;}
+.pstrip{display:flex;gap:8px;align-items:center;margin-top:18px;flex-wrap:wrap;justify-content:center;}
 .pc{display:flex;flex-direction:column;align-items:center;gap:4px;}
-.pb{width:clamp(40px,5.5vw,52px);height:clamp(40px,5.5vw,52px);border-radius:50%;border:2px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:clamp(.9rem,1.8vw,1.4rem);}
+.pb{width:clamp(44px,6vw,56px);height:clamp(44px,6vw,56px);border-radius:50%;border:2px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:clamp(1rem,1.9vw,1.5rem);}
 .pb.lit{border-color:#f0a500;box-shadow:0 0 14px rgba(240,165,0,.55);background:rgba(240,165,0,.1);}
-.plbl{font-size:clamp(.52rem,.88vw,.64rem);font-weight:700;color:rgba(255,255,255,.3);text-align:center;max-width:65px;}
+.plbl{font-size:clamp(.54rem,.9vw,.66rem);font-weight:700;color:rgba(255,255,255,.3);text-align:center;max-width:68px;}
 .plbl.lit{color:#f0a500;}
-.parr{font-size:.9rem;color:rgba(255,255,255,.13);margin-bottom:18px;}
+.parr{font-size:.9rem;color:rgba(255,255,255,.13);margin-bottom:20px;}
 
-/* ═══ SLIDE 7 INDICATORS ═══ */
+/* ═════════════════════════════════
+   SLIDE 7 — 21 INDICATORS (BIG CENTERED)
+═════════════════════════════════ */
 #s7{background:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(99,102,241,.09) 0%,transparent 60%),#07091a;}
-.ig{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;width:100%;max-width:960px;margin-top:12px;}
-.ic2{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:8px 4px;text-align:center;transition:all .25s;cursor:default;}
-.ic2:hover{background:rgba(255,255,255,.1);transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.3);}
-.ic2 .ie2{font-size:clamp(1rem,1.8vw,1.4rem);}
-.ic2 .cd{font-family:'DM Mono',monospace;font-size:clamp(.54rem,.92vw,.68rem);font-weight:700;padding:2px 5px;border-radius:4px;margin-top:3px;display:inline-block;}
-.ic2 .nm2{font-size:clamp(.52rem,.88vw,.65rem);color:rgba(255,255,255,.4);line-height:1.3;margin-top:2px;}
-.inv .cd{background:rgba(245,158,11,.2);color:#fbbf24;}
-.ret .cd{background:rgba(16,185,129,.2);color:#34d399;}
-.bap .cd{background:rgba(244,63,94,.2);color:#fb7185;}
-.cov .cd{background:rgba(139,92,246,.2);color:#c4b5fd;}
 
-/* ═══ SLIDE 8 COVENANT PATH ═══ */
+.ind-slide{
+  width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:28px 40px;gap:0;
+}
+/* 3 rows of big cards */
+.ind-row-label{
+  font-size:clamp(.7rem,1.1vw,.82rem);font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;margin:14px 0 8px;
+  display:flex;align-items:center;gap:10px;
+}
+.ind-row-label::before,.ind-row-label::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1);}
+.ind-big-grid{
+  display:grid;grid-template-columns:repeat(8,1fr);
+  gap:8px;width:100%;max-width:1040px;
+}
+.ind-big-grid.row2{grid-template-columns:repeat(7,1fr);}
+.ind-big-grid.row3{grid-template-columns:repeat(6,1fr);}
+.ibc{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:10px 6px;text-align:center;
+  transition:all .25s;cursor:default;
+}
+.ibc:hover{background:rgba(255,255,255,.1);transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.35);}
+.ibc .ie{font-size:clamp(1.2rem,2.2vw,1.7rem);}
+.ibc .icd{font-family:'DM Mono',monospace;font-size:clamp(.58rem,1vw,.76rem);font-weight:700;padding:3px 7px;border-radius:5px;margin-top:4px;display:inline-block;}
+.ibc .inn{font-size:clamp(.54rem,.9vw,.68rem);color:rgba(255,255,255,.4);line-height:1.3;margin-top:3px;}
+.inv-c .icd{background:rgba(245,158,11,.2);color:#fbbf24;}
+.ret-c .icd{background:rgba(16,185,129,.2);color:#34d399;}
+.bap-c .icd{background:rgba(244,63,94,.2);color:#fb7185;}
+.cov-c .icd{background:rgba(139,92,246,.2);color:#c4b5fd;}
+
+/* ═════════════════════════════════
+   SLIDE 8 — COVENANT PATH
+═════════════════════════════════ */
 #s8{background:radial-gradient(ellipse 80% 50% at 50% 100%,rgba(139,92,246,.12) 0%,transparent 60%),#07091a;}
-.pflow{display:flex;align-items:center;width:100%;max-width:920px;margin-top:14px;justify-content:center;}
-.pnode{display:flex;flex-direction:column;align-items:center;gap:7px;flex:1;}
-.pball{width:clamp(50px,6.5vw,68px);height:clamp(50px,6.5vw,68px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:clamp(1.15rem,2.1vw,1.75rem);border:2px solid rgba(255,255,255,.1);}
-.pball.lit{border-color:#8b5cf6;box-shadow:0 0 18px rgba(139,92,246,.5);background:rgba(139,92,246,.13);}
-.pnlbl{font-size:clamp(.58rem,.95vw,.72rem);font-weight:700;color:rgba(255,255,255,.45);text-align:center;max-width:78px;line-height:1.3;}
+.pflow{display:flex;align-items:center;width:100%;max-width:920px;margin-top:16px;justify-content:center;}
+.pnode{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;}
+.pball{width:clamp(52px,7vw,70px);height:clamp(52px,7vw,70px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:clamp(1.2rem,2.2vw,1.8rem);border:2px solid rgba(255,255,255,.1);}
+.pball.lit{border-color:#8b5cf6;box-shadow:0 0 20px rgba(139,92,246,.5);background:rgba(139,92,246,.13);}
+.pnlbl{font-size:clamp(.6rem,1vw,.74rem);font-weight:700;color:rgba(255,255,255,.45);text-align:center;max-width:80px;line-height:1.35;}
 .pnlbl.lit{color:#c4b5fd;}
-.pcon{width:24px;height:2px;background:rgba(255,255,255,.07);margin-bottom:24px;}
+.pcon{width:26px;height:2px;background:rgba(255,255,255,.07);margin-bottom:26px;}
 .pcon.lit{background:#8b5cf6;}
-.og{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;max-width:920px;margin-top:16px;}
-.ob{background:rgba(255,255,255,.03);border:1px solid rgba(139,92,246,.18);border-radius:12px;padding:13px 14px;}
-.ob h4{font-size:clamp(.62rem,.98vw,.74rem);font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#c4b5fd;margin-bottom:8px;}
-.or{display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:clamp(.62rem,.98vw,.72rem);color:rgba(255,255,255,.48);}
-.or:last-child{border:none;}
-.oc{width:13px;height:13px;border-radius:3px;border:1.5px solid rgba(139,92,246,.32);display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0;}
+.og{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:100%;max-width:920px;margin-top:18px;}
+.ob{background:rgba(255,255,255,.03);border:1px solid rgba(139,92,246,.2);border-radius:14px;padding:14px 16px;}
+.ob h4{font-size:clamp(.64rem,1.02vw,.76rem);font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#c4b5fd;margin-bottom:10px;}
+.ord-r{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:clamp(.64rem,1.02vw,.74rem);color:rgba(255,255,255,.5);}
+.ord-r:last-child{border:none;}
+.oc{width:14px;height:14px;border-radius:3px;border:1.5px solid rgba(139,92,246,.35);display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;}
 .oc.done{background:#8b5cf6;border-color:#8b5cf6;color:white;}
 
-/* ═══ SLIDE 9 REPORT ═══ */
+/* ═════════════════════════════════
+   SLIDE 9 — WARD COUNCIL REPORT (BIG)
+═════════════════════════════════ */
 #s9{background:radial-gradient(ellipse 70% 50% at 80% 20%,rgba(245,158,11,.09) 0%,transparent 55%),#07091a;}
-.rw{width:100%;max-width:860px;margin-top:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:18px;overflow:hidden;}
-.rh{background:linear-gradient(135deg,#b45309,#d97706);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;}
-.rh h2{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:2px;}
-.rh p{font-size:.68rem;opacity:.75;margin-top:1px;}
-.rp{background:rgba(255,255,255,.2);border:none;color:white;padding:6px 14px;border-radius:7px;font-size:.72rem;font-weight:800;}
-.rstats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;padding:13px 22px;}
-.rs{background:rgba(255,255,255,.04);border-radius:10px;padding:11px 7px;text-align:center;}
-.rs .n{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;line-height:1;}
-.rs .l{font-size:.62rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.38);margin-top:1px;}
-.rb{padding:0 22px 15px;}
-.rl{font-size:.64rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.32);margin:9px 0 5px;}
-.rrow{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);border-radius:8px;padding:7px 13px;margin-bottom:4px;font-size:.76rem;}
-.rtgs{display:flex;gap:3px;flex-wrap:wrap;}
-.rtg{font-size:.62rem;font-weight:800;padding:2px 7px;border-radius:4px;background:rgba(251,191,36,.14);color:#fbbf24;}
-.rpill{padding:3px 10px;border-radius:20px;font-size:.68rem;font-weight:800;}
+
+.report-slide{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:28px 48px;gap:0;
+}
+
+.rpt-card{
+  width:100%;max-width:1020px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+.rpt-head{
+  background:linear-gradient(135deg,#92400e,#d97706);
+  padding:16px 26px;display:flex;align-items:center;justify-content:space-between;
+}
+.rpt-head h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.3rem,2.8vw,2rem);letter-spacing:2px;}
+.rpt-head p{font-size:.76rem;opacity:.75;margin-top:2px;}
+.rpt-print-btn{background:rgba(255,255,255,.2);border:none;color:white;padding:7px 16px;border-radius:8px;font-size:.76rem;font-weight:800;cursor:default;}
+
+/* Stats row */
+.rpt-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px 26px;}
+.rpt-stat{background:rgba(255,255,255,.05);border-radius:14px;padding:14px 10px;text-align:center;}
+.rpt-stat .n{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3rem);line-height:1;}
+.rpt-stat .l{font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:3px;}
+
+/* Body sections */
+.rpt-body{padding:0 26px 18px;}
+.rpt-sec{font-size:.68rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.32);margin:10px 0 6px;}
+.rpt-row{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.04);border-radius:10px;
+  padding:9px 16px;margin-bottom:5px;
+}
+.rpt-row .nm{font-weight:800;font-size:.88rem;}
+.rpt-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.rtag{font-size:.68rem;font-weight:800;padding:3px 8px;border-radius:5px;background:rgba(251,191,36,.15);color:#fbbf24;}
+.rtag.red-tag{background:rgba(244,63,94,.18);color:#fca5a5;}
+.rpill{padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:800;}
 .rpill.red{background:rgba(244,63,94,.1);color:#fca5a5;}
 .rpill.pray{background:rgba(99,102,241,.12);color:#a5b4fc;}
+.rpill.grn{background:rgba(16,185,129,.1);color:#34d399;}
 
-/* ═══ SLIDE 10 CLOSE ═══ */
-#s10{background:radial-gradient(ellipse 100% 70% at 50% 105%,rgba(240,165,0,.17) 0%,transparent 65%),#07091a;}
-.cglow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(240,165,0,.18) 0%,transparent 70%);pointer-events:none;animation:pg 3s ease-in-out infinite;}
+/* ═════════════════════════════════
+   SLIDE 10 — CLOSE
+═════════════════════════════════ */
+#s10{background:radial-gradient(ellipse 100% 70% at 50% 105%,rgba(240,165,0,.18) 0%,transparent 65%),#07091a;}
+.cglow{position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(240,165,0,.18) 0%,transparent 70%);pointer-events:none;animation:pg 3s ease-in-out infinite;}
 @keyframes pg{0%,100%{transform:scale(1);opacity:.6;}50%{transform:scale(1.3);opacity:1;}}
-.ubox{font-family:'DM Mono',monospace;font-size:clamp(.76rem,1.35vw,.96rem);background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.18);color:#38bdf8;padding:12px 28px;border-radius:11px;letter-spacing:.5px;margin-top:14px;}
-.csr{display:flex;gap:34px;justify-content:center;flex-wrap:wrap;margin-top:18px;}
-.cs .n{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.1rem,4.6vw,3.4rem);line-height:1;color:#f0a500;}
+.ubox{font-family:'DM Mono',monospace;font-size:clamp(.78rem,1.4vw,1rem);background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.2);color:#38bdf8;padding:12px 30px;border-radius:12px;letter-spacing:.5px;margin-top:16px;}
+.csr{display:flex;gap:36px;justify-content:center;flex-wrap:wrap;margin-top:20px;}
+.cs .n{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4.8vw,3.5rem);line-height:1;color:#f0a500;}
 .cs .l{font-size:.64rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:2px;}
-.ob2{margin-top:20px;background:#f0a500;color:#111;font-weight:900;font-size:clamp(.86rem,1.5vw,1rem);padding:14px 36px;border-radius:40px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s;}
+.ob2{margin-top:22px;background:#f0a500;color:#111;font-weight:900;font-size:clamp(.9rem,1.55vw,1.06rem);padding:15px 38px;border-radius:40px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s;}
 .ob2:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(240,165,0,.4);}
-
-/* ═══ FLOATING ORB EFFECTS ═══ */
-.orb{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;animation:orbDrift var(--d) var(--delay) ease-in-out infinite alternate;}
-@keyframes orbDrift{from{transform:translate(0,0);}to{transform:translate(var(--tx),var(--ty));}}
-
-/* ═══ CORNER GLOW on active slides ═══ */
-.slide.active::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 30% 25% at 2% 2%,rgba(240,165,0,.06) 0%,transparent 60%);pointer-events:none;animation:cornerFade .8s ease forwards;}
-@keyframes cornerFade{from{opacity:0;}to{opacity:1;}}
-
-/* ═══ SHIMMER on focus person row ═══ */
-.focus-row-shimmer{
-  position:relative;overflow:hidden;
-}
-.focus-row-shimmer::after{
-  content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(240,165,0,.18),transparent);
-  animation:shimRow 3s 1s ease-in-out infinite;
-}
-@keyframes shimRow{from{left:-60%;}to{left:130%;}}
 </style>
 </head>
 <body>
 
-<!-- ─── BACKGROUND PARTICLES ─── -->
 <div id="particles"></div>
-
-<!-- ─── NAV ─── -->
 <div id="arl" onclick="prevSlide()">‹</div>
 <div id="arr" onclick="nextSlide()">›</div>
 <div id="dots"></div>
 <div id="counter"><span id="ci">1</span>/<span id="ct">10</span></div>
 
-<!-- ════════════════════════════════════════
+<!-- ═══════════════════════════════════════
      SLIDE 1 — TITLE
-════════════════════════════════════════ -->
+═══════════════════════════════════════ -->
 <div class="slide active" id="s1">
-  <div class="orb" style="width:400px;height:400px;background:rgba(240,165,0,.06);top:-150px;left:-100px;--d:8s;--delay:-2s;--tx:60px;--ty:40px;"></div>
+  <div class="orb" style="width:400px;height:400px;background:rgba(240,165,0,.06);top:-180px;left:-100px;--d:8s;--delay:-2s;--tx:60px;--ty:40px;"></div>
   <div class="orb" style="width:300px;height:300px;background:rgba(56,189,248,.05);bottom:-100px;right:-80px;--d:10s;--delay:-4s;--tx:-50px;--ty:-30px;"></div>
   <div class="si" style="gap:6px;">
     <div class="tag s1">Riverton 24th Tongan Ward · 2025</div>
     <div class="big s2" style="font-size:clamp(5rem,13vw,10rem);">FOCUS<br><span class="gold">FIVE</span></div>
     <div class="s3" style="font-size:clamp(1rem,2.2vw,1.4rem);font-weight:700;letter-spacing:5px;color:rgba(255,255,255,.38);text-transform:uppercase;">Focus on the <span class="gold">One</span></div>
     <div class="hero-verse s4">"What man of you, having a hundred sheep, if he lose one of them, doth not leave the ninety and nine… <strong>and go after that which is lost?</strong>" — Matthew 18:11–14</div>
-    <div class="s5" style="font-size:clamp(.7rem,1.15vw,.82rem);font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.2);margin-top:6px;">Missionary Tracker · Riverton 24th Ward</div>
+    <div class="s5" style="font-size:clamp(.7rem,1.1vw,.82rem);font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.2);margin-top:6px;">Missionary Tracker · Riverton 24th Ward</div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     SLIDE 2 — SCRIPTURE + SHEEP ANIMATION
-════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════
+     SLIDE 2 — SCRIPTURE + PHOTO + SHEEP
+═══════════════════════════════════════ -->
 <div class="slide" id="s2">
-  <div class="orb" style="width:350px;height:350px;background:rgba(99,102,241,.07);top:50%;left:50%;transform:translate(-50%,-50%);--d:6s;--delay:0s;--tx:20px;--ty:20px;"></div>
-  <div class="si" style="gap:12px;">
-    <div class="tag s1">The Foundation</div>
-    <div class="sc-card s2">
-      <div class="sc-ref">Matthew 18 : 11 – 14</div>
-      <div class="sc-text">"For the Son of man is come to save that which was lost. How think ye? If a man have a hundred sheep, and one of them be gone astray, doth he not leave the <em>ninety and nine</em>, and goeth into the mountains, and seeketh that which is gone astray?<br><br>…<em>Even so it is not the will of your Father which is in heaven, that one of these little ones should perish.</em>"</div>
+  <div class="s2-layout">
+
+    <!-- LEFT: scripture + sheep -->
+    <div class="s2-left s1">
+      <div class="tag" style="align-self:flex-start;margin-bottom:0;">The Foundation</div>
+      <div class="sc-card s2">
+        <div class="sc-ref">Matthew 18 : 11 – 14</div>
+        <div class="sc-text">"…If a man have a hundred sheep, and one of them be gone astray, doth he not leave the <em>ninety and nine</em>, and goeth into the mountains, and seeketh that which is gone astray?<br><br>…<em>Even so it is not the will of your Father that one of these little ones should perish.</em>"</div>
+      </div>
+
+      <div class="sheep-stage s3" id="sheep-stage">
+        <div class="spotlight" id="spotlight"></div>
+        <div class="one-ring" id="one-ring"></div>
+        <div class="sheep-herd" id="sheep-herd"></div>
+      </div>
+      <div class="s2-caption s4">Every name in our tracker is that <span class="gold" style="font-weight:800;">one lost sheep.</span><br>The ward — all 99 — work together to bring them home.</div>
     </div>
 
-    <!-- animated sheep stage -->
-    <div class="sheep-stage s3" id="sheep-stage">
-      <div class="spotlight" id="spotlight"></div>
-      <div class="one-ring" id="one-ring"></div>
-      <div class="sheep-herd" id="sheep-herd"></div>
+    <!-- RIGHT: photo upload -->
+    <div class="s2-right s3" id="s2-photo-col">
+      <div class="photo-drop" id="photo-drop" onclick="document.getElementById('photo-file').click()">
+        <input type="file" id="photo-file" accept="image/*" style="display:none" onchange="loadPhoto(event)">
+        <img id="photo-img" alt="">
+        <div class="ph-icon" id="ph-icon">🖼️</div>
+        <div class="ph-lbl" id="ph-lbl">Click to add a photo</div>
+        <div class="ph-sub" id="ph-sub">JPG, PNG, or GIF</div>
+      </div>
+      <div class="photo-caption" id="photo-caption">Add your ward photo<br>or a photo of the person<br>you're highlighting</div>
     </div>
 
-    <div class="s2-caption s4">Every name in our tracker is that <span class="gold" style="font-weight:800;">one lost sheep.</span> The ward — all 99 — work together to bring them home.</div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
+<!-- ═══════════════════════════════════════
      SLIDE 3 — THE PRINCIPLE
-════════════════════════════════════════ -->
+═══════════════════════════════════════ -->
 <div class="slide" id="s3">
   <div class="orb" style="width:380px;height:380px;background:rgba(244,63,94,.05);bottom:-120px;left:-80px;--d:9s;--delay:-3s;--tx:40px;--ty:-30px;"></div>
   <div class="si" style="gap:10px;">
     <div class="tag s1">How We Apply It</div>
-    <div class="big s2" style="font-size:clamp(2.4rem,5.8vw,4.8rem);">FOCUS ON THE <span class="gold">ONE.</span><br><span style="font-size:.52em;color:rgba(255,255,255,.3);">MINISTER TO THE</span> <span style="font-size:.52em;">99.</span></div>
+    <div class="big s2" style="font-size:clamp(2.6rem,6vw,5rem);">FOCUS ON THE <span class="gold">ONE.</span><br><span style="font-size:.52em;color:rgba(255,255,255,.3);">MINISTER TO THE</span> <span style="font-size:.52em;">99.</span></div>
     <div class="p-grid s3">
       <div class="p-card">
         <div class="bar" style="background:linear-gradient(90deg,#f59e0b,#d97706);"></div>
@@ -345,7 +439,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0c1a;font-family:
       <div class="p-card">
         <div class="bar" style="background:linear-gradient(90deg,#8b5cf6,#6d28d9);"></div>
         <h3 class="lav">🔄 The Funnel</h3>
-        <p>Once the one comes back to the fold, <strong>focus shifts</strong> to the next person. The tracker makes this decision obvious — most indicators = closest to progressing.</p>
+        <p>Once the one comes back to the fold, <strong>focus shifts</strong> to the next person. The tracker makes this obvious — most indicators = closest to progressing.</p>
       </div>
       <div class="p-card">
         <div class="bar" style="background:linear-gradient(90deg,#38bdf8,#0284c7);"></div>
@@ -356,184 +450,214 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0c1a;font-family:
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     SLIDE 4 — TRACKER: INVESTIGATORS
-════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════
+     SLIDE 4 — INVESTIGATORS (BIG CENTERED)
+═══════════════════════════════════════ -->
 <div class="slide" id="s4">
-  <div class="si" style="justify-content:flex-start;padding-top:16px;gap:6px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:990px;" class="s1">
-      <div>
-        <div class="tag" style="margin-bottom:2px;">Inside the Tracker</div>
-        <div class="big" style="font-size:clamp(1.9rem,4.2vw,3rem);">👤 INVESTIGATORS</div>
-      </div>
-      <div style="font-size:clamp(.76rem,1.28vw,.88rem);color:rgba(255,255,255,.42);max-width:290px;text-align:right;line-height:1.55;">🔥 = <span class="gold">Focus Person</span> — most indicators logged, closest to their next milestone.</div>
+  <div class="tracker-slide">
+
+    <div class="s1" style="text-align:center;margin-bottom:18px;">
+      <div class="tag" style="margin-bottom:4px;">Inside the Tracker</div>
+      <div class="big" style="font-size:clamp(2.6rem,5.8vw,4.4rem);">👤 INVESTIGATORS</div>
+      <div style="font-size:clamp(.82rem,1.35vw,.98rem);color:rgba(255,255,255,.42);margin-top:6px;font-weight:600;">🔥 = Focus Person — most indicators logged, closest to progressing</div>
     </div>
-    <div class="tw s2">
-      <div class="th">
-        <div><h2>⛪ RIVERTON 24TH WARD — FOCUS FIVE TRACKER</h2><p>Real-time synced · Firebase Realtime Database</p></div>
-        <div class="ttabs"><div class="ttab on">👤 Investigators (5)</div><div class="ttab off">💙 Returning (5)</div></div>
+
+    <div class="trk-card s2">
+      <!-- header -->
+      <div class="trk-head" style="background:linear-gradient(135deg,#92400e,#b45309);">
+        <div><div class="trk-head-title">⛪ RIVERTON 24TH WARD — FOCUS FIVE TRACKER</div><div class="trk-head-sub">Real-time synced · Firebase Realtime Database</div></div>
+        <div class="trk-tabs"><div class="trk-tab on">👤 Investigators</div><div class="trk-tab off">💙 Returning</div></div>
       </div>
-      <div class="tqnav">
-        <span>Quarter:</span><div class="tqb">Q1</div><div class="tqb">Q2</div><div class="tqb sel">Q3 ← Now</div><div class="tqb">Q4</div>
-        <span style="margin-left:auto;font-size:.68rem;color:rgba(255,255,255,.62);">📊 Q3: 17 activities &nbsp;|&nbsp; 4/5 active &nbsp;|&nbsp; Top: ⛪ IAC</span>
+      <!-- quarter bar -->
+      <div class="trk-qbar" style="background:linear-gradient(90deg,#b45309,#c2712f);">
+        <span>Quarter:</span>
+        <div class="trk-qbtn">Q1</div><div class="trk-qbtn">Q2</div><div class="trk-qbtn sel">Q3 ← Now</div><div class="trk-qbtn">Q4</div>
+        <span class="trk-meta">📊 Q3: 17 activities &nbsp;|&nbsp; 4/5 active &nbsp;|&nbsp; Top: ⛪ IAC</span>
       </div>
-      <div class="ttable">
-        <table style="width:100%;border-collapse:collapse;">
-          <thead class="tthead"><tr>
-            <th style="min-width:160px;text-align:left;">Name &amp; Goal</th>
-            <th style="min-width:90px;">Assigned</th>
-            <th>JUL</th><th>AUG</th><th>SEP</th>
-            <th style="min-width:100px;">Notes</th>
-            <th>Stats</th>
-          </tr></thead>
-          <tbody id="inv-tbody"></tbody>
-        </table>
-      </div>
+      <!-- table -->
+      <table class="trk-table">
+        <thead><tr style="background:linear-gradient(135deg,#f59e0b,#d97706);">
+          <th class="trk-th" style="min-width:200px;">Name &amp; Goal</th>
+          <th class="trk-th" style="min-width:110px;">Assigned To</th>
+          <th class="trk-th center">JUL</th><th class="trk-th center">AUG</th><th class="trk-th center">SEP</th>
+          <th class="trk-th" style="min-width:130px;">Notes</th>
+          <th class="trk-th center">Stats</th>
+        </tr></thead>
+        <tbody id="inv-tbody"></tbody>
+      </table>
     </div>
-    <div class="s3" style="font-size:clamp(.66rem,1.1vw,.76rem);color:rgba(255,255,255,.28);text-align:center;">Click any month cell to log indicators · 🔥 = Focus Person · 🔴 = no activity logged yet</div>
+
+    <div class="s3" style="font-size:clamp(.7rem,1.15vw,.82rem);color:rgba(255,255,255,.28);margin-top:12px;text-align:center;">
+      Click any month cell to log indicators &nbsp;·&nbsp; 🔥 = Focus Person &nbsp;·&nbsp; 🔴 = no activity logged yet
+    </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     SLIDE 5 — TRACKER: RETURNING MEMBERS
-════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════
+     SLIDE 5 — RETURNING MEMBERS (BIG CENTERED)
+═══════════════════════════════════════ -->
 <div class="slide" id="s5">
-  <div class="si" style="justify-content:flex-start;padding-top:16px;gap:6px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:990px;" class="s1">
-      <div>
-        <div class="tag" style="margin-bottom:2px;">Inside the Tracker</div>
-        <div class="big" style="font-size:clamp(1.9rem,4.2vw,3rem);">💙 RETURNING MEMBERS</div>
-      </div>
-      <div style="font-size:clamp(.76rem,1.28vw,.88rem);color:rgba(255,255,255,.42);max-width:290px;text-align:right;line-height:1.55;">Each active ward member has an <span class="grn">assignment</span> — they are the 99 bringing someone home.</div>
+  <div class="tracker-slide">
+
+    <div class="s1" style="text-align:center;margin-bottom:18px;">
+      <div class="tag" style="margin-bottom:4px;">Inside the Tracker</div>
+      <div class="big" style="font-size:clamp(2.6rem,5.8vw,4.4rem);">💙 RETURNING MEMBERS</div>
+      <div style="font-size:clamp(.82rem,1.35vw,.98rem);color:rgba(255,255,255,.42);margin-top:6px;font-weight:600;">Each active ward member has an assignment — they are the 99 bringing someone home</div>
     </div>
-    <div class="tw s2">
-      <div class="th grnh">
-        <div><h2>💙 RETURNING MEMBERS — FOCUS FIVE TRACKER</h2><p>Real-time synced · Firebase Realtime Database</p></div>
-        <div class="ttabs"><div class="ttab off">👤 Investigators (5)</div><div class="ttab gon">💙 Returning (5)</div></div>
+
+    <div class="trk-card s2">
+      <div class="trk-head" style="background:linear-gradient(135deg,#065f46,#047857);">
+        <div><div class="trk-head-title">💙 RETURNING MEMBERS — FOCUS FIVE TRACKER</div><div class="trk-head-sub">Real-time synced · Firebase Realtime Database</div></div>
+        <div class="trk-tabs"><div class="trk-tab off-grn">👤 Investigators</div><div class="trk-tab on">💙 Returning</div></div>
       </div>
-      <div class="tqnav grnh">
-        <span>Quarter:</span><div class="tqb">Q1</div><div class="tqb">Q2</div><div class="tqb sel" style="color:#047857;">Q3 ← Now</div><div class="tqb">Q4</div>
-        <span style="margin-left:auto;font-size:.68rem;color:rgba(255,255,255,.62);">📊 Q3: 14 activities &nbsp;|&nbsp; 3/5 active &nbsp;|&nbsp; Top: 🙏 AC</span>
+      <div class="trk-qbar" style="background:linear-gradient(90deg,#047857,#059669);">
+        <span>Quarter:</span>
+        <div class="trk-qbtn">Q1</div><div class="trk-qbtn">Q2</div><div class="trk-qbtn sel-g">Q3 ← Now</div><div class="trk-qbtn">Q4</div>
+        <span class="trk-meta">📊 Q3: 14 activities &nbsp;|&nbsp; 3/5 active &nbsp;|&nbsp; Top: 🙏 AC</span>
       </div>
-      <div class="ttable">
-        <table style="width:100%;border-collapse:collapse;">
-          <thead class="tthead grnh"><tr>
-            <th style="min-width:160px;text-align:left;">Name &amp; Goal</th>
-            <th style="min-width:90px;">Assigned</th>
-            <th>JUL</th><th>AUG</th><th>SEP</th>
-            <th style="min-width:100px;">Notes</th>
-            <th>Stats</th>
-          </tr></thead>
-          <tbody id="ret-tbody"></tbody>
-        </table>
-      </div>
+      <table class="trk-table">
+        <thead><tr style="background:linear-gradient(135deg,#10b981,#059669);">
+          <th class="trk-th" style="min-width:200px;">Name &amp; Goal</th>
+          <th class="trk-th" style="min-width:110px;">Assigned To</th>
+          <th class="trk-th center">JUL</th><th class="trk-th center">AUG</th><th class="trk-th center">SEP</th>
+          <th class="trk-th" style="min-width:130px;">Notes</th>
+          <th class="trk-th center">Stats</th>
+        </tr></thead>
+        <tbody id="ret-tbody"></tbody>
+      </table>
     </div>
-    <div class="s3" style="font-size:clamp(.66rem,1.1vw,.76rem);color:rgba(255,255,255,.28);text-align:center;">Same logic as investigators — most indicators = closest to returning. Assignments keep the 99 engaged.</div>
+
+    <div class="s3" style="font-size:clamp(.7rem,1.15vw,.82rem);color:rgba(255,255,255,.28);margin-top:12px;text-align:center;">
+      Same logic — most indicators = closest to returning. When they do, focus shifts to the next person.
+    </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
+<!-- ═══════════════════════════════════════
      SLIDE 6 — FOCUS SHIFTS
-════════════════════════════════════════ -->
+═══════════════════════════════════════ -->
 <div class="slide" id="s6">
   <div class="orb" style="width:350px;height:350px;background:rgba(240,165,0,.07);top:50%;left:50%;transform:translate(-50%,-50%);--d:7s;--delay:-1s;--tx:30px;--ty:30px;"></div>
   <div class="si" style="gap:6px;">
     <div class="tag s1">The Process in Action</div>
-    <div class="big s2" style="font-size:clamp(2.1rem,5.2vw,4.2rem);">WHEN THE <span class="gold">ONE</span> RETURNS…<br><span style="font-size:.55em;color:rgba(255,255,255,.32);">THE FOCUS SHIFTS TO THE</span> <span class="gold" style="font-size:.55em;">NEXT ONE.</span></div>
+    <div class="big s2" style="font-size:clamp(2.2rem,5.5vw,4.4rem);">WHEN THE <span class="gold">ONE</span> RETURNS…<br><span style="font-size:.55em;color:rgba(255,255,255,.32);">THE FOCUS SHIFTS TO THE</span> <span class="gold" style="font-size:.55em;">NEXT ONE.</span></div>
     <div class="ff-wrap s3" id="funnel-el"></div>
     <div class="pstrip s4" id="pstrip-el"></div>
-    <div class="s5" style="font-size:clamp(.72rem,1.2vw,.84rem);color:rgba(255,255,255,.35);text-align:center;max-width:660px;line-height:1.75;">The tracker shows you who has the most indicators — that's your <span class="gold">focus person</span>. When they progress, the data points to the next. This is how a ward of 99 moves as <em>one</em>.</div>
+    <div class="s5" style="font-size:clamp(.76rem,1.25vw,.9rem);color:rgba(255,255,255,.35);text-align:center;max-width:700px;line-height:1.75;margin-top:4px;">The tracker shows you who has the most indicators — that's your <span class="gold">focus person.</span> When they progress, the data points to the next. This is how a ward of 99 moves as <em>one.</em></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     SLIDE 7 — 21 INDICATORS
-════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════
+     SLIDE 7 — 21 INDICATORS (BIG CENTERED)
+═══════════════════════════════════════ -->
 <div class="slide" id="s7">
-  <div class="si" style="justify-content:flex-start;padding-top:14px;gap:6px;">
+  <div class="ind-slide">
     <div class="tag s1" style="text-align:center;">The Measurement System</div>
-    <div class="big s2" style="font-size:clamp(1.9rem,4.2vw,3.2rem);text-align:center;">21 WAYS TO <span class="gold">MEASURE</span> PROGRESS</div>
-    <div class="ig s3" id="ind-grid"></div>
-    <div class="s4" style="font-size:clamp(.66rem,1.1vw,.76rem);color:rgba(255,255,255,.28);margin-top:9px;text-align:center;">More indicators logged = closer to the next milestone = clearer who the Focus Person is. Every interaction matters.</div>
+    <div class="big s2" style="font-size:clamp(2.2rem,5vw,3.8rem);text-align:center;">21 WAYS TO <span class="gold">MEASURE</span> PROGRESS</div>
+
+    <!-- Invitations row -->
+    <div class="ind-row-label s3" style="color:rgba(251,191,36,.7);width:100%;max-width:1040px;">
+      ✉️ Invitations
+    </div>
+    <div class="ind-big-grid s3" id="inv-grid"></div>
+
+    <!-- Responses row -->
+    <div class="ind-row-label s4" style="color:rgba(52,211,153,.7);width:100%;max-width:1040px;">
+      🔄 Responses &amp; Activity
+    </div>
+    <div class="ind-big-grid row2 s4" id="ret-grid"></div>
+
+    <!-- Milestones row -->
+    <div class="ind-row-label s5" style="color:rgba(251,113,133,.7);width:100%;max-width:1040px;">
+      💧 Milestones &amp; Covenant
+    </div>
+    <div class="ind-big-grid row3 s5" id="mil-grid"></div>
+
+    <div class="s6" style="font-size:clamp(.68rem,1.1vw,.78rem);color:rgba(255,255,255,.28);margin-top:12px;text-align:center;">More indicators logged = closer to the next milestone = clearer who the Focus Person is</div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
+<!-- ═══════════════════════════════════════
      SLIDE 8 — COVENANT PATH
-════════════════════════════════════════ -->
+═══════════════════════════════════════ -->
 <div class="slide" id="s8">
   <div class="orb" style="width:350px;height:350px;background:rgba(139,92,246,.08);bottom:-100px;right:-80px;--d:9s;--delay:-2s;--tx:-40px;--ty:-20px;"></div>
   <div class="si" style="gap:8px;">
     <div class="tag s1">After Baptism</div>
-    <div class="big s2" style="font-size:clamp(2.1rem,4.8vw,4rem);">THE COVENANT <span class="lav">PATH</span></div>
-    <div class="s3" style="font-size:clamp(.82rem,1.35vw,.96rem);color:rgba(255,255,255,.46);text-align:center;max-width:640px;line-height:1.65;">Baptism isn't the finish line. <em>Focus on the One</em> continues — we track every ordinance and milestone until the temple endowment. The same "who is closest?" logic applies.</div>
+    <div class="big s2" style="font-size:clamp(2.4rem,5.2vw,4.2rem);">THE COVENANT <span class="lav">PATH</span></div>
+    <div class="s3" style="font-size:clamp(.86rem,1.4vw,1rem);color:rgba(255,255,255,.46);text-align:center;max-width:660px;line-height:1.65;">Baptism isn't the finish line. <em>Focus on the One</em> continues — we track every ordinance and milestone until the temple endowment.</div>
     <div class="pflow s4" id="path-flow"></div>
     <div class="og s5" id="ord-grid"></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     SLIDE 9 — WARD COUNCIL REPORT
-════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════
+     SLIDE 9 — WARD COUNCIL REPORT (BIG)
+═══════════════════════════════════════ -->
 <div class="slide" id="s9">
-  <div class="si" style="justify-content:flex-start;padding-top:14px;gap:8px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:860px;" class="s1">
-      <div>
-        <div class="tag" style="margin-bottom:2px;">Leadership Tool</div>
-        <div class="big" style="font-size:clamp(1.9rem,4.2vw,3rem);">ONE-CLICK <span class="gold">REPORT</span></div>
-      </div>
-      <div style="font-size:clamp(.76rem,1.28vw,.88rem);color:rgba(255,255,255,.42);max-width:280px;text-align:right;line-height:1.55;">Every Sunday council starts here. Real data. <span class="gold">Who is the Focus Person this week?</span></div>
+  <div class="report-slide">
+
+    <div class="s1" style="text-align:center;margin-bottom:16px;">
+      <div class="tag" style="margin-bottom:4px;">Leadership Tool</div>
+      <div class="big" style="font-size:clamp(2.6rem,5.8vw,4.4rem);">ONE-CLICK <span class="gold">WARD COUNCIL REPORT</span></div>
+      <div style="font-size:clamp(.82rem,1.35vw,.98rem);color:rgba(255,255,255,.42);margin-top:6px;font-weight:600;">Every Sunday council starts here — who is the <span class="gold">Focus Person</span> this week?</div>
     </div>
-    <div class="rw s2">
-      <div class="rh">
+
+    <div class="rpt-card s2">
+      <div class="rpt-head">
         <div><h2>📋 Ward Council Report</h2><p>Riverton 24th Tongan Ward · May 2025</p></div>
-        <button class="rp">🖨️ Print</button>
+        <button class="rpt-print-btn">🖨️ Print</button>
       </div>
-      <div class="rstats">
-        <div class="rs"><div class="n" style="color:#f59e0b;">8</div><div class="l">Investigators</div></div>
-        <div class="rs"><div class="n" style="color:#10b981;">6</div><div class="l">Returning</div></div>
-        <div class="rs"><div class="n" style="color:#8b5cf6;">4</div><div class="l">Covenant Path</div></div>
-        <div class="rs"><div class="n" style="color:#38bdf8;">23</div><div class="l">Activities / Month</div></div>
+      <div class="rpt-stats">
+        <div class="rpt-stat"><div class="n" style="color:#f59e0b;">8</div><div class="l">Investigators</div></div>
+        <div class="rpt-stat"><div class="n" style="color:#10b981;">6</div><div class="l">Returning Members</div></div>
+        <div class="rpt-stat"><div class="n" style="color:#8b5cf6;">4</div><div class="l">Covenant Path</div></div>
+        <div class="rpt-stat"><div class="n" style="color:#38bdf8;">23</div><div class="l">Activities / Month</div></div>
       </div>
-      <div class="rb">
-        <div class="rl">🔥 Focus Person — Closest to Progressing</div>
-        <div class="rrow focus-row-shimmer" style="background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.22);">
-          <span style="font-weight:800;font-size:.82rem;">🔥 Sione Taufa <span style="color:rgba(255,255,255,.32);font-weight:400;font-size:.7rem;">(Investigator)</span></span>
-          <div class="rtgs"><span class="rtg">IAC</span><span class="rtg">TML</span><span class="rtg">ACA</span><span class="rtg">TXT</span><span class="rtg" style="background:rgba(244,63,94,.18);color:#fca5a5;">BD</span></div>
+      <div class="rpt-body">
+        <!-- Focus Person -->
+        <div class="rpt-sec">🔥 Focus Person — Closest to Progressing</div>
+        <div class="rpt-row shimrow" style="background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.25);">
+          <span class="nm">🔥 Sione Taufa <span style="color:rgba(255,255,255,.35);font-weight:400;font-size:.78rem;">(Investigator)</span></span>
+          <div class="rpt-tags"><span class="rtag">IAC</span><span class="rtag">TML</span><span class="rtag">ACA</span><span class="rtag">TXT</span><span class="rtag red-tag">BD</span></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-top:6px;">
+        <!-- 3 columns -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:4px;">
           <div>
-            <div class="rl">⛪ Investigators — May</div>
-            <div class="rrow"><span style="font-size:.76rem;font-weight:700;">👤 Maria Faleolo</span><div class="rtgs"><span class="rtg">AC</span><span class="rtg">TML</span></div></div>
-            <div class="rrow"><span style="font-size:.76rem;font-weight:700;">👤 Peni Latu</span><div class="rtgs"><span class="rtg">TXT</span><span class="rtg">IACA</span></div></div>
+            <div class="rpt-sec">⛪ Investigators — May</div>
+            <div class="rpt-row"><span class="nm" style="font-size:.82rem;">👤 Maria Faleolo</span><div class="rpt-tags"><span class="rtag">AC</span><span class="rtag">TML</span></div></div>
+            <div class="rpt-row"><span class="nm" style="font-size:.82rem;">👤 Peni Latu</span><div class="rpt-tags"><span class="rtag">TXT</span><span class="rtag">IACA</span></div></div>
           </div>
           <div>
-            <div class="rl">🔴 Needs Attention</div>
-            <div style="display:flex;flex-wrap:wrap;gap:5px;"><span class="rpill red">Ana Taufa</span><span class="rpill red">Havili Family</span></div>
-            <div class="rl" style="margin-top:9px;">💙 Returning Active</div>
-            <div style="display:flex;flex-wrap:wrap;gap:5px;"><span class="rpill" style="background:rgba(16,185,129,.1);color:#34d399;">Tupa Faleolo ✅</span></div>
+            <div class="rpt-sec">🔴 Needs Attention</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;"><span class="rpill red">Ana Taufa</span><span class="rpill red">Havili Family</span></div>
+            <div class="rpt-sec" style="margin-top:12px;">💙 Returning — Active</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;"><span class="rpill grn">Tupa Faleolo ✅</span></div>
           </div>
           <div>
-            <div class="rl">🙏 Prayer Roll</div>
-            <div style="display:flex;flex-wrap:wrap;gap:5px;"><span class="rpill pray">Latu Family</span><span class="rpill pray">Br. Fifita</span><span class="rpill pray">Sina Taufa</span></div>
+            <div class="rpt-sec">🙏 Prayer Roll</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;"><span class="rpill pray">Latu Family</span><span class="rpill pray">Br. Fifita</span><span class="rpill pray">Sina Taufa</span></div>
           </div>
         </div>
       </div>
     </div>
-    <div class="s3" style="font-size:clamp(.64rem,1.05vw,.74rem);color:rgba(255,255,255,.28);text-align:center;">Generated in one click · Printable · Auto-updates each month as activity is logged</div>
+
+    <div class="s3" style="font-size:clamp(.68rem,1.1vw,.78rem);color:rgba(255,255,255,.28);margin-top:12px;text-align:center;">
+      Generated in one click · Printable · Auto-updates each month as activity is logged
+    </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     SLIDE 10 — CLOSE / LIVE DEMO
-════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════
+     SLIDE 10 — CLOSE
+═══════════════════════════════════════ -->
 <div class="slide" id="s10">
   <div class="cglow"></div>
-  <div class="orb" style="width:400px;height:400px;background:rgba(240,165,0,.07);bottom:-150px;left:50%;transform:translateX(-50%);--d:6s;--delay:0s;--tx:20px;--ty:-30px;"></div>
+  <div class="orb" style="width:400px;height:400px;background:rgba(240,165,0,.07);bottom:-160px;left:50%;transform:translateX(-50%);--d:6s;--delay:0s;--tx:20px;--ty:-30px;"></div>
   <div class="si" style="gap:2px;">
     <div class="tag s1">Open Right Now · No Install Required</div>
-    <div class="big s2" style="font-size:clamp(3.8rem,10vw,8.5rem);">SEE IT<br><span class="gold">LIVE.</span></div>
-    <div class="s3" style="font-size:clamp(.86rem,1.45vw,1.04rem);color:rgba(255,255,255,.45);text-align:center;max-width:560px;line-height:1.75;">Live right now, syncing real-time to Firebase. Open on any phone or laptop — no install, no login. This is our ward's tool.</div>
+    <div class="big s2" style="font-size:clamp(4rem,10.5vw,9rem);">SEE IT<br><span class="gold">LIVE.</span></div>
+    <div class="s3" style="font-size:clamp(.9rem,1.5vw,1.08rem);color:rgba(255,255,255,.45);text-align:center;max-width:580px;line-height:1.75;">Live right now, syncing real-time to Firebase. Open on any phone or laptop — no install, no login. This is our ward's tool.</div>
     <div class="csr s4">
       <div class="cs"><div class="n">21</div><div class="l">Indicators</div></div>
       <div class="cs"><div class="n">2</div><div class="l">People Lists</div></div>
@@ -545,8 +669,15 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0c1a;font-family:
   </div>
 </div>
 
+<style>
+/* shimmer on focus row in report */
+.shimrow{position:relative;overflow:hidden;}
+.shimrow::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(240,165,0,.18),transparent);animation:shimrow 3.5s 2s ease-in-out infinite;}
+@keyframes shimrow{from{left:-50%;}to{left:130%;}}
+</style>
+
 <script>
-/* ─── INDICATORS DATA ─── */
+/* ── INDICATORS DATA ── */
 const INDS=[
   {code:'IAC',name:'Invite to Church',emoji:'⛪',cat:'inv'},
   {code:'IRB',name:'Invite to Read BOM',emoji:'📖',cat:'inv'},
@@ -557,7 +688,7 @@ const INDS=[
   {code:'IFH',name:'Family History',emoji:'🌳',cat:'inv'},
   {code:'ISP',name:'Service Project',emoji:'🤝',cat:'inv'},
   {code:'MV',name:'Ministering Visit',emoji:'🚪',cat:'ret'},
-  {code:'TXT',name:'Texted/Called',emoji:'📱',cat:'ret'},
+  {code:'TXT',name:'Texted / Called',emoji:'📱',cat:'ret'},
   {code:'AC',name:'Attended Church',emoji:'🙏',cat:'ret'},
   {code:'RBOM',name:'Reading BOM',emoji:'📚',cat:'ret'},
   {code:'ACA',name:'Attended Activity',emoji:'🎊',cat:'ret'},
@@ -570,145 +701,136 @@ const INDS=[
   {code:'ASP',name:'Attended Service',emoji:'💪',cat:'bap'},
   {code:'ACTIVE',name:'Active Member',emoji:'⭐',cat:'cov'},
 ];
-function ge(c){const i=INDS.find(x=>x.code===c);return i?i.emoji:c;}
+const ge=c=>INDS.find(x=>x.code===c)?.emoji||c;
 
-/* ─── PARTICLES ─── */
+/* ── PARTICLES ── */
 function buildParticles(){
   const c=document.getElementById('particles');
   for(let i=0;i<40;i++){
     const p=document.createElement('div');p.className='particle';
-    const sz=Math.random()*2.5+0.5;
-    const o=Math.random()*0.25+0.05;
-    const d=(Math.random()*8+4).toFixed(1)+'s';
-    const del=(-(Math.random()*8)).toFixed(1)+'s';
-    const tx=(Math.random()*60-30).toFixed(0)+'px';
-    const ty=(Math.random()*60-30).toFixed(0)+'px';
-    p.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;background:rgba(255,255,255,${o.toFixed(2)});--d:${d};--delay:${del};--o:${o.toFixed(2)};--tx:${tx};--ty:${ty};`;
+    const sz=Math.random()*2.5+0.5,o=(Math.random()*.2+.04).toFixed(2);
+    const d=(Math.random()*8+4).toFixed(1)+'s',del=(-(Math.random()*8)).toFixed(1)+'s';
+    const tx=(Math.random()*60-30).toFixed(0)+'px',ty=(Math.random()*60-30).toFixed(0)+'px';
+    p.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;background:rgba(255,255,255,${o});--d:${d};--delay:${del};--o:${o};--tx:${tx};--ty:${ty};`;
     c.appendChild(p);
   }
 }
 
-/* ─── SHEEP ANIMATION (SLIDE 2) ─── */
-let sheepBuilt=false;
-const TOTAL_SHEEP=20;
-const ONE_IDX=12; // index of the lost sheep
+/* ── PHOTO UPLOAD ── */
+function loadPhoto(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const img=document.getElementById('photo-img');
+    img.src=ev.target.result;
+    img.style.display='block';
+    document.getElementById('ph-icon').style.display='none';
+    document.getElementById('ph-lbl').style.display='none';
+    document.getElementById('ph-sub').style.display='none';
+    document.getElementById('photo-caption').textContent='';
+    // make drop bigger once photo loaded
+    document.getElementById('photo-drop').style.cssText='width:260px;height:300px;border-radius:20px;border:2px solid rgba(240,165,0,.35);overflow:hidden;cursor:pointer;position:relative;';
+  };
+  reader.readAsDataURL(file);
+}
 
+/* ── SHEEP ANIMATION ── */
+let sheepBuilt=false;
 function buildSheepScene(){
-  if(sheepBuilt)return;
-  sheepBuilt=true;
+  if(sheepBuilt)return;sheepBuilt=true;
   const herd=document.getElementById('sheep-herd');
   const ring=document.getElementById('one-ring');
   const spot=document.getElementById('spotlight');
   herd.innerHTML='';
-  for(let i=0;i<TOTAL_SHEEP;i++){
+  const ONE=12,TOTAL=20;
+  for(let i=0;i<TOTAL;i++){
     const s=document.createElement('span');
-    s.className='sh';
-    s.dataset.idx=i;
-    s.textContent='🐑';
+    s.className='sh';s.textContent='🐑';s.dataset.idx=i;
     herd.appendChild(s);
   }
-
-  // Phase 1 (0.6s): all appear faded
   const all=herd.querySelectorAll('.sh');
   all.forEach(s=>s.classList.add('faded'));
-
-  // Phase 2 (1s): herd lights up one by one except the one
+  // light up herd
   setTimeout(()=>{
     all.forEach((s,i)=>{
-      if(i===ONE_IDX)return;
+      if(i===ONE)return;
       setTimeout(()=>{
         s.classList.remove('faded');
-        // add gentle sway after they appear
         const rot=(Math.random()*10-5).toFixed(0)+'deg';
         const sd=(Math.random()*2+1.5).toFixed(1)+'s';
         const sdelay=(-(Math.random()*2)).toFixed(1)+'s';
-        s.style.setProperty('--sr',rot);
-        s.style.setProperty('--sd',sd);
-        s.style.setProperty('--sdelay',sdelay);
+        s.style.setProperty('--sr',rot);s.style.setProperty('--sd',sd);s.style.setProperty('--sdelay',sdelay);
         s.classList.add('straying');
       },i*55);
     });
   },700);
-
-  // Phase 3 (2.5s): the one brightens big
+  // highlight the one
   setTimeout(()=>{
-    const one=all[ONE_IDX];
+    const one=all[ONE];
     one.classList.remove('faded');
     one.classList.add('the-one');
-    // position ring + spotlight over the one
-    positionOverlay(one,ring,spot);
+    setTimeout(()=>{
+      const r=one.getBoundingClientRect();
+      const stage=document.getElementById('sheep-stage').getBoundingClientRect();
+      const cx=r.left-stage.left+r.width/2;
+      const cy=r.top-stage.top+r.height/2;
+      ring.style.left=(cx-ring.offsetWidth/2)+'px';
+      ring.style.top=(cy-ring.offsetHeight/2)+'px';
+      ring.style.opacity='1';
+      spot.style.left=(cx-35)+'px';
+      spot.style.top=(cy-120)+'px';
+      spot.style.opacity='1';
+    },80);
   },2500);
-
-  // Phase 4 (4.5s): some sheep walk away (simulate lost ones becoming found over time)
-  // subtle, only 2-3 sheep briefly drift and return
 }
 
-function positionOverlay(one,ring,spot){
-  // We can't precisely position them over the emoji without getBoundingClientRect
-  // So we do it after a tiny paint delay
-  setTimeout(()=>{
-    const r=one.getBoundingClientRect();
-    const stage=document.getElementById('sheep-stage').getBoundingClientRect();
-    const cx=r.left-stage.left+r.width/2;
-    const cy=r.top-stage.top+r.height/2;
-    ring.style.left=(cx-ring.offsetWidth/2)+'px';
-    ring.style.top=(cy-ring.offsetHeight/2)+'px';
-    spot.style.left=(cx-40)+'px';
-    spot.style.top=(cy-120)+'px';
-    ring.style.opacity='1';
-    spot.style.opacity='1';
-  },50);
-}
-
-/* ─── INV TABLE ─── */
+/* ── INV TABLE ── */
 const invData=[
   {em:'🔥',nm:'Sione Taufa',gl:'Goal: Baptism',as:'Elders Quorum',jul:['IAC','TML','TXT'],aug:['ACA','TML','IAC'],sep:['TML','BD','TXT','AC'],note:'Baptism date set!',total:10,focus:true},
-  {em:'👤',nm:'Maria Faleolo',gl:'Goal: Attend Church',as:'Relief Society',jul:['IAC'],aug:['TXT'],sep:['AC','TML'],note:'Consistent now',total:4,focus:false},
-  {em:'👧',nm:'Lani Havili',gl:'Goal: Read BOM',as:'Young Women',jul:[],aug:['IRB'],sep:['TXT'],note:'Slow progress',total:2,focus:false},
-  {em:'👤',nm:'Peni Latu',gl:'',as:'',jul:[],aug:[],sep:[],note:'',total:0,focus:false,na:true},
-  {em:'👴',nm:'Siosaia Tonga',gl:'Goal: FHE',as:'Elders Quorum',jul:['TXT'],aug:['IFHE','ACA'],sep:['TXT'],note:'Making progress',total:4,focus:false},
+  {em:'👤',nm:'Maria Faleolo',gl:'Goal: Attend Church',as:'Relief Society',jul:['IAC'],aug:['TXT'],sep:['AC','TML'],note:'Consistent now',total:4},
+  {em:'👧',nm:'Lani Havili',gl:'Goal: Read BOM',as:'Young Women',jul:[],aug:['IRB'],sep:['TXT'],note:'Slow progress',total:2},
+  {em:'👤',nm:'Peni Latu',gl:'',as:'',jul:[],aug:[],sep:[],note:'',total:0,na:true},
+  {em:'👴',nm:'Siosaia Tonga',gl:'Goal: Attend FHE',as:'Elders Quorum',jul:['TXT'],aug:['IFHE','ACA'],sep:['TXT'],note:'Making progress',total:4},
 ];
 function renderInv(){
   const tb=document.getElementById('inv-tbody');if(!tb)return;
-  const ms=['jul','aug','sep'];
   tb.innerHTML=invData.map((p,i)=>{
-    const bg=i%2===0?'#fff':'#fffbeb';
-    const fb=p.focus?'box-shadow:inset 4px 0 0 #f0a500;':'';
-    return`<tr class="ttr" style="background:${bg};${fb}">
-      <td class="ttd"><div class="tnm"><span class="em">${p.em}</span><div><div class="nm">${p.nm}${p.focus?' 🔥':''}${p.na?' <span style="color:#ef4444;font-size:.64rem;">🔴</span>':''}</div><div class="gl">${p.gl}</div></div></div></td>
-      <td class="ttd" style="font-size:.68rem;color:#6b7280;">${p.as||'—'}</td>
-      ${ms.map(m=>{const inds=p[m]||[];return`<td class="ttd" style="text-align:center;"><div class="ic">${inds.length?inds.map(c=>`<span class="ie" title="${c}">${ge(c)}</span>`).join(''):'<span class="ab">+</span>'}</div></td>`;}).join('')}
-      <td class="ttd" style="font-size:.65rem;color:#9ca3af;max-width:105px;">${p.note}</td>
-      <td class="ttd" style="text-align:center;">${p.total>0?`<div class="sp">${p.total}<div style="font-size:.52rem;">total</div></div>`:'<span style="font-size:.64rem;color:#d1d5db;">—</span>'}</td>
+    const even=i%2!==0;
+    const focusStyle=p.focus?'focus-bar shimrow':'';
+    return`<tr class="trk-tr${even?' even':''} ${focusStyle}">
+      <td class="trk-td"><div class="trk-name-cell"><span class="trk-em">${p.em}</span><div><div class="trk-nm">${p.nm}${p.focus?' 🔥':''}${p.na?' <span style="color:#ef4444;font-size:.72rem;">🔴</span>':''}</div><div class="trk-gl">${p.gl}</div></div></div></td>
+      <td class="trk-td"><span class="trk-assign">${p.as||'—'}</span></td>
+      ${['jul','aug','sep'].map(m=>{const inds=p[m]||[];return`<td class="trk-td" style="text-align:center;"><div class="trk-ic">${inds.length?inds.map(c=>`<span class="trk-ie" title="${c}">${ge(c)}</span>`).join(''):`<span class="trk-add">+</span>`}</div></td>`;}).join('')}
+      <td class="trk-td" style="font-size:.72rem;color:#9ca3af;max-width:130px;">${p.note}</td>
+      <td class="trk-td" style="text-align:center;">${p.total>0?`<span class="trk-stat">${p.total} total</span>`:'<span style="color:#d1d5db;font-size:.72rem;">—</span>'}</td>
     </tr>`;
   }).join('');
 }
 
-/* ─── RET TABLE ─── */
+/* ── RET TABLE ── */
 const retData=[
   {em:'🔥',nm:'Tupa Faleolo',gl:'Goal: Return to Church',as:'Elders Quorum',jul:['TXT','MV'],aug:['AC','MV','AFHE'],sep:['AC','TXT','ACA'],note:'Came back! ✅',total:8,focus:true},
-  {em:'💙',nm:'Latu Family',gl:'Goal: Attend Sacrament',as:'Relief Society',jul:['TXT'],aug:['MV','TXT'],sep:['TXT'],note:'Dad hesitant',total:4,focus:false},
-  {em:'👦',nm:'Malo Tonga',gl:'',as:'Young Men',jul:[],aug:['TXT'],sep:[],note:'',total:1,focus:false},
-  {em:'💙',nm:'Sina Havili',gl:'Goal: Activities',as:'Young Women',jul:[],aug:[],sep:[],note:'',total:0,focus:false,na:true},
-  {em:'👴',nm:'Br. Fifita',gl:'Goal: Take lessons',as:'Elders Quorum',jul:['MV'],aug:['TXT','AC'],sep:['TML'],note:'Warming up',total:4,focus:false},
+  {em:'💙',nm:'Latu Family',gl:'Goal: Attend Sacrament',as:'Relief Society',jul:['TXT'],aug:['MV','TXT'],sep:['TXT'],note:'Dad hesitant',total:4},
+  {em:'👦',nm:'Malo Tonga',gl:'',as:'Young Men',jul:[],aug:['TXT'],sep:[],note:'',total:1},
+  {em:'💙',nm:'Sina Havili',gl:'Goal: Activities',as:'Young Women',jul:[],aug:[],sep:[],note:'',total:0,na:true},
+  {em:'👴',nm:'Br. Fifita',gl:'Goal: Take lessons',as:'Elders Quorum',jul:['MV'],aug:['TXT','AC'],sep:['TML'],note:'Warming up',total:4},
 ];
 function renderRet(){
   const tb=document.getElementById('ret-tbody');if(!tb)return;
-  const ms=['jul','aug','sep'];
   tb.innerHTML=retData.map((p,i)=>{
-    const bg=i%2===0?'#fff':'#f0fdf4';
-    const fb=p.focus?'box-shadow:inset 4px 0 0 #10b981;':'';
-    return`<tr class="ttr grn-row" style="background:${bg};${fb}">
-      <td class="ttd"><div class="tnm"><span class="em">${p.em}</span><div><div class="nm">${p.nm}${p.focus?' 🔥':''}${p.na?' <span style="color:#ef4444;font-size:.64rem;">🔴</span>':''}</div><div class="gl">${p.gl}</div></div></div></td>
-      <td class="ttd" style="font-size:.68rem;color:#6b7280;">${p.as||'—'}</td>
-      ${ms.map(m=>{const inds=p[m]||[];return`<td class="ttd" style="text-align:center;"><div class="ic">${inds.length?inds.map(c=>`<span class="ie" title="${c}">${ge(c)}</span>`).join(''):'<span class="ab">+</span>'}</div></td>`;}).join('')}
-      <td class="ttd" style="font-size:.65rem;color:#9ca3af;max-width:105px;">${p.note}</td>
-      <td class="ttd" style="text-align:center;">${p.total>0?`<div class="sp g">${p.total}<div style="font-size:.52rem;">total</div></div>`:'<span style="font-size:.64rem;color:#d1d5db;">—</span>'}</td>
+    const even=i%2!==0;
+    const focusStyle=p.focus?'focus-bar-g shimrow':'';
+    return`<tr class="trk-tr${even?' even-g':''} ${focusStyle}">
+      <td class="trk-td"><div class="trk-name-cell"><span class="trk-em">${p.em}</span><div><div class="trk-nm">${p.nm}${p.focus?' 🔥':''}${p.na?' <span style="color:#ef4444;font-size:.72rem;">🔴</span>':''}</div><div class="trk-gl">${p.gl}</div></div></div></td>
+      <td class="trk-td"><span class="trk-assign">${p.as||'—'}</span></td>
+      ${['jul','aug','sep'].map(m=>{const inds=p[m]||[];return`<td class="trk-td" style="text-align:center;"><div class="trk-ic">${inds.length?inds.map(c=>`<span class="trk-ie" title="${c}">${ge(c)}</span>`).join(''):`<span class="trk-add">+</span>`}</div></td>`;}).join('')}
+      <td class="trk-td" style="font-size:.72rem;color:#9ca3af;max-width:130px;">${p.note}</td>
+      <td class="trk-td" style="text-align:center;">${p.total>0?`<span class="trk-stat g">${p.total} total</span>`:'<span style="color:#d1d5db;font-size:.72rem;">—</span>'}</td>
     </tr>`;
   }).join('');
 }
 
-/* ─── FUNNEL ─── */
+/* ── FUNNEL ── */
 function buildFunnel(){
   const el=document.getElementById('funnel-el');if(!el)return;
   const rows=[
@@ -724,46 +846,56 @@ function buildFunnel(){
     h+=`<span class="ff-lbl">${r.lbl}</span>`;
     if(r.focus)h+=`<span class="ff-sp">← Focus Here</span>`;
     h+=`</div>`;
-    if(ri<rows.length-1)h+=`<div style="color:rgba(255,255,255,.11);font-size:.72rem;text-align:center;padding:1px 0;">↓ one comes home · focus shifts</div>`;
+    if(ri<rows.length-1)h+=`<div style="color:rgba(255,255,255,.1);font-size:.74rem;text-align:center;padding:1px 0;">↓ one comes home · focus shifts</div>`;
     return h;
   }).join('');
 }
 
-/* ─── PROGRESS STRIP ─── */
+/* ── PROGRESS STRIP ── */
 function buildPstrip(){
   const el=document.getElementById('pstrip-el');if(!el)return;
   const steps=[
-    {em:'🙏',lbl:'First Contact',lit:true},{em:'📖',lbl:'Reading BOM',lit:true},{em:'🎉',lbl:'Activity',lit:true},
-    {em:'👔',lbl:'Lessons',lit:true},{em:'📅',lbl:'Date Set',lit:false},{em:'💧',lbl:'Baptized',lit:false},
+    {em:'🙏',lbl:'First Contact',lit:true},{em:'📖',lbl:'Reading BOM',lit:true},
+    {em:'🎉',lbl:'Activity',lit:true},{em:'👔',lbl:'Lessons',lit:true},
+    {em:'📅',lbl:'Date Set',lit:false},{em:'💧',lbl:'Baptized',lit:false},
     {em:'🏛️',lbl:'Ordinances',lit:false},{em:'🏆',lbl:'Endowment',lit:false},
   ];
   el.innerHTML=steps.map((s,i)=>`<div style="display:flex;align-items:center;gap:0;"><div class="pc"><div class="pb${s.lit?' lit':''}">${s.em}</div><div class="plbl${s.lit?' lit':''}">${s.lbl}</div></div>${i<steps.length-1?'<div class="parr">→</div>':''}</div>`).join('');
 }
 
-/* ─── INDICATORS GRID ─── */
+/* ── INDICATORS GRID (split into rows) ── */
 function buildIndGrid(){
-  const el=document.getElementById('ind-grid');if(!el)return;
-  const cm={inv:'inv',ret:'ret',bap:'bap',cov:'cov'};
-  el.innerHTML=INDS.map(ind=>`<div class="ic2 ${cm[ind.cat]}"><div class="ie2">${ind.emoji}</div><div class="cd">${ind.code}</div><div class="nm2">${ind.name}</div></div>`).join('');
+  const invG=document.getElementById('inv-grid');
+  const retG=document.getElementById('ret-grid');
+  const milG=document.getElementById('mil-grid');
+  if(!invG||!retG||!milG)return;
+  const invInds=INDS.filter(x=>x.cat==='inv');
+  const retInds=INDS.filter(x=>x.cat==='ret');
+  const milInds=INDS.filter(x=>x.cat==='bap'||x.cat==='cov');
+  const card=(ind,cls)=>`<div class="ibc ${cls}"><div class="ie">${ind.emoji}</div><div class="icd">${ind.code}</div><div class="inn">${ind.name}</div></div>`;
+  invG.innerHTML=invInds.map(i=>card(i,'inv-c')).join('');
+  retG.innerHTML=retInds.map(i=>card(i,'ret-c')).join('');
+  milG.innerHTML=milInds.map(i=>card(i,i.cat==='cov'?'cov-c':'bap-c')).join('');
 }
 
-/* ─── COVENANT PATH ─── */
+/* ── COVENANT PATH ── */
 function buildPath(){
   const pf=document.getElementById('path-flow');if(!pf)return;
   const nodes=[
-    {em:'💧',lbl:'Baptism',lit:true},{em:'🕊️',lbl:'Confirmed',lit:true},{em:'🏛️',lbl:'Temple Baptisms',lit:true},
-    {em:'📜',lbl:'Patriarchal Blessing',lit:false},{em:'⚜️',lbl:'Priesthood',lit:false},{em:'🏆',lbl:'Endowment',lit:false},
+    {em:'💧',lbl:'Baptism',lit:true},{em:'🕊️',lbl:'Confirmed',lit:true},
+    {em:'🏛️',lbl:'Temple Baptisms',lit:true},{em:'📜',lbl:'Patriarchal Blessing',lit:false},
+    {em:'⚜️',lbl:'Priesthood',lit:false},{em:'🏆',lbl:'Endowment',lit:false},
   ];
   pf.innerHTML=nodes.map((n,i)=>`<div class="pnode"><div class="pball${n.lit?' lit':''}">${n.em}</div><div class="pnlbl${n.lit?' lit':''}">${n.lbl}</div></div>${i<nodes.length-1?`<div class="pcon${n.lit?' lit':''}"></div>`:''}`).join('');
   const og=document.getElementById('ord-grid');if(!og)return;
   og.innerHTML=`
-    <div class="ob"><h4>👨 Male Ordinances</h4><div class="or"><div class="oc done">✓</div>Aaronic Priesthood</div><div class="or"><div class="oc done">✓</div>Temple Baptisms</div><div class="or"><div class="oc"></div>Patriarchal Blessing</div><div class="or"><div class="oc"></div>Melchizedek Priesthood</div><div class="or"><div class="oc"></div>Temple Endowment</div></div>
-    <div class="ob"><h4>👩 Female Ordinances</h4><div class="or"><div class="oc done">✓</div>Temple Baptisms</div><div class="or"><div class="oc done">✓</div>Patriarchal Blessing</div><div class="or"><div class="oc"></div>Temple Endowment</div></div>
-    <div class="ob"><h4>🎓 OAY Path</h4><div class="or"><div class="oc"></div>Temple Baptisms</div><div class="or" style="font-size:.6rem;color:rgba(255,255,255,.22);padding-top:5px;">Youth converts — temple baptism is primary milestone</div></div>
-    <div class="ob"><h4>💼 Self-Reliance</h4><div class="or"><div class="oc done">✓</div>Emotional Resilience</div><div class="or"><div class="oc done">✓</div>Personal Finances</div><div class="or"><div class="oc"></div>Start/Grow Business</div><div class="or"><div class="oc"></div>Education for Work</div></div>`;
+    <div class="ob"><h4>👨 Male Ordinances</h4><div class="ord-r"><div class="oc done">✓</div>Aaronic Priesthood</div><div class="ord-r"><div class="oc done">✓</div>Temple Baptisms</div><div class="ord-r"><div class="oc"></div>Patriarchal Blessing</div><div class="ord-r"><div class="oc"></div>Melchizedek Priesthood</div><div class="ord-r"><div class="oc"></div>Temple Endowment</div></div>
+    <div class="ob"><h4>👩 Female Ordinances</h4><div class="ord-r"><div class="oc done">✓</div>Temple Baptisms</div><div class="ord-r"><div class="oc done">✓</div>Patriarchal Blessing</div><div class="ord-r"><div class="oc"></div>Temple Endowment</div></div>
+    <div class="ob"><h4>🎓 OAY Path</h4><div class="ord-r"><div class="oc"></div>Temple Baptisms</div><div class="ord-r" style="font-size:.62rem;color:rgba(255,255,255,.22);padding-top:5px;">Youth converts — temple baptism is primary milestone</div></div>
+    <div class="ob"><h4>💼 Self-Reliance</h4><div class="ord-r"><div class="oc done">✓</div>Emotional Resilience</div><div class="ord-r"><div class="oc done">✓</div>Personal Finances</div><div class="ord-r"><div class="oc"></div>Start/Grow Business</div><div class="ord-r"><div class="oc"></div>Education for Work</div></div>`;
 }
 
-/* ─── SLIDE ENGINE ─── */
+/* ── SLIDE ENGINE ── */
 const slides=Array.from(document.querySelectorAll('.slide'));
 const total=slides.length;
 let cur=0;
@@ -778,47 +910,36 @@ function buildDots(){
     d.appendChild(dot);
   });
 }
-
 function updateDots(){
   document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===cur));
   document.getElementById('ci').textContent=cur+1;
 }
-
 function goTo(n){
   if(n===cur||n<0||n>=total)return;
   const prev=slides[cur],next=slides[n];
-  prev.classList.remove('active','entering');
-  prev.classList.add('leaving');
-  setTimeout(()=>prev.classList.remove('leaving'),400);
+  prev.classList.remove('active','entering');prev.classList.add('leaving');
+  setTimeout(()=>prev.classList.remove('leaving'),380);
   next.classList.add('active','entering');
-  setTimeout(()=>next.classList.remove('entering'),650);
-  cur=n;
-  updateDots();
-  // trigger sheep anim when landing on slide 2
-  if(n===1) setTimeout(buildSheepScene,300);
+  setTimeout(()=>next.classList.remove('entering'),620);
+  cur=n;updateDots();
+  if(n===1)setTimeout(buildSheepScene,300);
 }
-
 function nextSlide(){goTo(cur+1);}
 function prevSlide(){goTo(cur-1);}
 
 document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight'||e.key===' '||e.key==='ArrowDown'){e.preventDefault();nextSlide();}
-  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();prevSlide();}
+  if(['ArrowRight',' ','ArrowDown'].includes(e.key)){e.preventDefault();nextSlide();}
+  if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();prevSlide();}
 });
 let tx=0;
 document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
 document.addEventListener('touchend',e=>{const dx=tx-e.changedTouches[0].clientX;if(Math.abs(dx)>50){dx>0?nextSlide():prevSlide();}},{passive:true});
 
-/* ─── INIT ─── */
-buildParticles();
-buildDots();
-renderInv();
-renderRet();
-buildFunnel();
-buildPstrip();
-buildIndGrid();
-buildPath();
-// Slide 1 is active on load — build sheep only when we arrive at slide 2
+/* ── INIT ── */
+buildParticles();buildDots();
+renderInv();renderRet();
+buildFunnel();buildPstrip();
+buildIndGrid();buildPath();
 </script>
 </body>
 </html>
